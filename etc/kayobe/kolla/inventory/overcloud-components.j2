@@ -269,35 +269,3 @@ control
 {{ groups['monitoring'][0] }}
 {% endif %}
 #########################
-
-# Cinder
-[cinder-api:children]
-control
-
-[cinder-backup:children]
-control
-
-[cinder-scheduler:children]
-control
-
-[cinder-volume:children]
-control
-
-[prometheus-elasticsearch-exporter:children]
-elasticsearch
-
-[prometheus-libvirt-exporter:children]
-compute
-
-[prometheus-openstack-exporter:children]
-monitoring
-
-[prometheus-mtail:children]
-monitoring
-control
-compute
-network
-storage
-
-[prometheus-jiralert:children]
-prometheus-alertmanager
