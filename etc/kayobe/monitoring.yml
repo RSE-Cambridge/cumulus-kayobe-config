@@ -66,7 +66,7 @@ monitoring_network_interfaces: >
 # role for format.
 #monitoring_lvm_groups_extra:
 
-controller_lvm_group_data_disks:
+monitoring_lvm_group_data_disks:
   - /dev/sda
 
 ###############################################################################
