@@ -83,7 +83,7 @@ keystone_tag: 7.0.1.10
 kibana_tag: 7.0.1.10
 kolla_toolbox_tag: 7.0.1.10
 logstash_tag: 7.0.1.10
-magnum_tag: stein
+magnum_tag: train
 manila_tag: 7.0.1.10
 mariadb_tag: 7.0.1.10
 memcached_tag: 7.0.1.10
