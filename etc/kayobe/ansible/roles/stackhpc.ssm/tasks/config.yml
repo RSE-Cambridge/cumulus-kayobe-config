@@ -1,0 +1,52 @@
+---
+- name: Ensure configuration directory exists
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: 0755
+  become: true
+  with_items:
+    - "{{ ssm_config_path }}"
+
+- name: Include container config tasks
+  include_tasks: update-config.yml
+  with_dict: "{{ ssm_services }}"
+
+- name: Add EGI-trustanchors repository
+  command: yum-config-manager --add-repo http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo
+  args:
+    creates: /etc/yum.repos.d/EGI-trustanchors.repo
+
+- name: Install EGI grid-security cacerts
+  package:
+    name: ca-policy-egi-core
+
+- name: Install fetchcrl
+  package:
+    name: fetch-crl
+
+- name: start and enable fetchrl cron job service
+  service:
+    name: fetch-crl-cron.service
+    state: started
+    enabled: true
+
+- name: start and enable fetchrl boot time service
+  service:
+    name: fetch-crl-boot.service
+    state: started
+    enabled: true
+  changed_when: false
+  # This will cause fetchcrl to run immediately. It can report a failed status
+  # when some of the certificate CRLs fail to be processed. The error looks like:
+  # ERROR CRL verification failed for SDG-G2/0 (SDG-G2)
+  # VERBOSE(0) SDG-G2/0: CRL has nextUpdate time in the past
+  # which seems to be an issue with the upstream CRL. Ignore this error as a
+  # workaround.
+  failed_when: false
+  # This can take a long time to execute because it runs fetch-crl immediately, as
+  # we are ignorning the result, run this asynchronously.
+  async: 600
+  poll: 0

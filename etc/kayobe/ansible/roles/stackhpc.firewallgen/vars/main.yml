@@ -1,0 +1,9 @@
+---
+# vars file for stackhpc.firewallgen
+
+firewallgen_iptables_tables:
+  - filter
+  - nat
+  - mangle
+  - raw
+  - security

@@ -1,0 +1,7 @@
+---
+- name: Fail if the image is not defined
+  fail:
+    msg: SSM Docker image must be defined via 'ssm_image'.
+  when: ssm_image is none
+
+- include: "{{ ssm_action }}.yml"

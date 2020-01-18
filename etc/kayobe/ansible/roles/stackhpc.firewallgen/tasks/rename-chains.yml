@@ -1,0 +1,9 @@
+---
+
+- name: "{{ iptables_cmd }}: Rename old chains"
+  # This returns a rule number for each rule with a comment starting: "FIREWALLGEN"
+  shell:
+    cmd: |
+      {{ iptables_cmd }} -E {{ item }} {{ 'deleteme_' ~ item }} -t {{ table }}
+  with_items: "{{ table_to_chains[table] }}"
+  become: True

@@ -1,0 +1,62 @@
+---
+# tasks file for stackhpc.firewallgen
+
+- name: gen firewall
+  vars:
+    firewallgen_iptables_version: 4
+  template:
+    src: firewall-rules.j2
+    dest: "{{ firewallgen_rules_path }}"
+  tags:
+    - template
+    - iptables
+
+- name: gen firewall (ip6tables)
+  vars:
+    firewallgen_iptables_version: 6
+  template:
+    src: firewall-rules.j2
+    dest: "{{ firewallgen_ipv6_rules_path }}"
+  tags:
+    - template
+    - ip6tables
+
+- name: backup original rules
+  shell: iptables-save > "{{ firewallgen_backup_path }}"
+  args:
+    creates: "{{ firewallgen_backup_path }}"
+  become: True
+  tags: iptables
+
+- name: backup original rules (ip6tables)
+  shell: ip6tables-save > "{{ firewallgen_ipv6_backup_path }}"
+  args:
+    creates: "{{ firewallgen_ipv6_backup_path }}"
+  become: True
+  tags: ip6tables
+
+- name: include rename-existing
+  include_tasks: rename-existing.yml
+  tags: always
+
+- name: load firewall rules
+  # -n option will not flush existing rules
+  shell:
+    iptables-restore -n < "{{ firewallgen_rules_path }}"
+  become: True
+  tags: iptables
+
+- name: load firewall rules (ip6tables)
+  # -n option will not flush existing rules
+  shell:
+    ip6tables-restore -n < "{{ firewallgen_ipv6_rules_path }}"
+  become: True
+  tags: ip6tables
+
+- name: include delete-renamed
+  include_tasks: delete-renamed.yml
+  tags: always
+
+- include_tasks: persist.yml
+  when: firewall_action == "apply"
+  tags: always

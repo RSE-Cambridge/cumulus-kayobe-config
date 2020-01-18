@@ -1,0 +1,45 @@
+---
+
+- block:
+  - name: install package for persistent iptables
+    package:
+      name: iptables-services
+
+  - name: enable service to load iptables rules on boot (iptables)
+    service:
+      name: iptables
+      state: started
+      enabled: True
+    tags: iptables
+
+  - name: enable service to load iptables rules on boot
+    service:
+      name: ip6tables
+      state: started
+      enabled: True
+    tags: ip6tables
+
+  - name: persist the rules (iptables)
+    copy:
+      src: "{{ firewallgen_rules_path }}"
+      dest: /etc/sysconfig/iptables
+      owner: root
+      remote_src: True
+      group: root
+      mode: 0600
+      backup: True
+    tags: iptables
+
+  - name: persist the rules (ip6tables)
+    copy:
+      src: "{{ firewallgen_ipv6_rules_path }}"
+      dest: /etc/sysconfig/ip6tables
+      owner: root
+      remote_src: True
+      group: root
+      mode: 0600
+      backup: True
+    tags: ip6tables
+
+  become: True
+  when: ansible_os_family == "RedHat"

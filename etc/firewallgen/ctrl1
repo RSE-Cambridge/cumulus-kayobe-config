@@ -1,0 +1,508 @@
+---
+
+firewallgen_enable_firewall: True
+
+firewallgen_ipv4_input_allow_rules:
+  - interface: "lo"
+    port: 25
+    proto: tcp
+    destination: "127.0.0.1"
+    comment: "hint: used by 'master'"
+  - interface: "lo"
+    port: 6633
+    proto: tcp
+    destination: "127.0.0.1"
+    comment: "hint: used by 'neutron-openvsw' in docker container 'neutron_openvswitch_agent'"
+  - interface: "lo"
+    port: 6640
+    proto: tcp
+    destination: "127.0.0.1"
+    comment: "hint: used by 'ovsdb-server' in docker container 'openvswitch_db'"
+  - interface: "lo"
+    port: 9290
+    proto: tcp
+    destination: "127.0.0.1"
+    comment: "hint: used by 'docker-proxy'"
+  - interface: "lo"
+    port: 24224
+    proto: tcp
+    destination: "127.0.0.1"
+    comment: "hint: used by 'fluentd' in docker container 'fluentd'"
+  - interface: "{{ admin_oc_net_interface }}"
+    port: 22
+    proto: tcp
+    comment: "hint: used by 'sshd'"
+  - interface: "{{ internal_net_interface }}"
+    port: 80
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'httpd' in docker container 'horizon'"
+  - interface: "{{ internal_net_interface }}"
+    port: 80
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for horizon"
+  - interface: "{{ internal_net_interface }}"
+    port: 1984
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'haproxy' for stats"
+  - interface: "{{ internal_net_interface }}"
+    port: 3000
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for grafana_server"
+  - interface: "{{ internal_net_interface }}"
+    port: 3306
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'mysqld' in docker container 'mariadb'"
+  - interface: "{{ internal_net_interface }}"
+    port: 3306
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for mariadb"
+  - interface: "{{ internal_net_interface }}"
+    port: 4369
+    proto: tcp
+    comment: "hint: used by 'epmd' in docker container 'rabbitmq'"
+  - interface: "{{ internal_net_interface }}"
+    port: 4567
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'mysqld' in docker container 'mariadb'"
+  - interface: "{{ internal_net_interface }}"
+    port: 5000
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'httpd' in docker container 'keystone'"
+  - interface: "{{ internal_net_interface }}"
+    port: 5000
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for keystone_internal"
+  - interface: "{{ internal_net_interface }}"
+    port: 5050
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'ironic-inspecto' in docker container 'ironic_inspector'"
+  - interface: "{{ internal_net_interface }}"
+    port: 5050
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for ironic_inspector"
+  - interface: "{{ internal_net_interface }}"
+    port: 5601
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for kibana"
+  - interface: "{{ internal_net_interface }}"
+    port: 5672
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'beam.smp' in docker container 'rabbitmq'"
+  - interface: "{{ internal_net_interface }}"
+    port: 6080
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'nova-novncproxy' in docker container 'nova_novncproxy'"
+  - interface: "{{ internal_net_interface }}"
+    port: 6080
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for nova_novncproxy"
+  - interface: "{{ internal_net_interface }}"
+    port: 6083
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'nova-serialprox' in docker container 'nova_serialproxy'"
+  - interface: "{{ internal_net_interface }}"
+    port: 6083
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for nova_serialconsole_proxy"
+  - interface: "{{ internal_net_interface }}"
+    port: 6385
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'ironic-api' in docker container 'ironic_api'"
+  - interface: "{{ internal_net_interface }}"
+    port: 6385
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for ironic_api"
+  - interface: "{{ internal_net_interface }}"
+    port: 6780
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for radosgw"
+  - interface: "{{ internal_net_interface }}"
+    port: 8000
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'heat-api-cfn' in docker container 'heat_api_cfn'"
+  - interface: "{{ internal_net_interface }}"
+    port: 8000
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for heat_api_cfn"
+  - interface: "{{ internal_net_interface }}"
+    port: 8004
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'heat-api' in docker container 'heat_api'"
+  - interface: "{{ internal_net_interface }}"
+    port: 8004
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for heat_api"
+  - interface: "{{ internal_net_interface }}"
+    port: 8023
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'sshd' in docker container 'keystone_ssh'"
+  - interface: "{{ internal_net_interface }}"
+    port: 8080
+    proto: tcp
+    comment: "hint: used by 'nginx' in docker container 'inspection_store'"
+  - interface: "{{ internal_net_interface }}"
+    port: 8089
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'httpd' in docker container 'ironic_ipxe'"
+  - interface: "{{ internal_net_interface }}"
+    port: 8774
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'nova-api' in docker container 'nova_api'"
+  - interface: "{{ internal_net_interface }}"
+    port: 8774
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for nova_api"
+  - interface: "{{ internal_net_interface }}"
+    port: 8775
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'nova-api' in docker container 'nova_api'"
+  - interface: "{{ internal_net_interface }}"
+    port: 8775
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for nova_metadata"
+  - interface: "{{ internal_net_interface }}"
+    port: 8776
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'httpd' in docker container 'cinder_api'"
+  - interface: "{{ internal_net_interface }}"
+    port: 8776
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for cinder_api"
+  - interface: "{{ internal_net_interface }}"
+    port: 8780
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'httpd' in docker container 'placement_api'"
+  - interface: "{{ internal_net_interface }}"
+    port: 8780
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for placement_api"
+  - interface: "{{ internal_net_interface }}"
+    port: 8786
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'manila-api' in docker container 'manila_api'"
+  - interface: "{{ internal_net_interface }}"
+    port: 8786
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for manila_api"
+  - interface: "{{ internal_net_interface }}"
+    port: 9091
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for prometheus_server"
+  - interface: "{{ internal_net_interface }}"
+    port: 9093
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for prometheus_alertmanager"
+  - interface: "{{ internal_net_interface }}"
+    port: 9100
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'node_exporter' in docker container 'prometheus_node_exporter'"
+  - interface: "{{ internal_net_interface }}"
+    port: 9101
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'haproxy_exporte' in docker container 'prometheus_haproxy_exporter'"
+  - interface: "{{ internal_net_interface }}"
+    port: 9104
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'mysqld_exporter' in docker container 'prometheus_mysqld_exporter'"
+  - interface: "{{ internal_net_interface }}"
+    port: 9150
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'memcached_expor' in docker container 'prometheus_memcached_exporter'"
+  - interface: "{{ internal_net_interface }}"
+    port: 9191
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for glance_registry"
+  - interface: "{{ internal_net_interface }}"
+    port: 9200
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for elasticsearch"
+  - interface: "{{ internal_net_interface }}"
+    port: 9292
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'glance-api' in docker container 'glance_api'"
+  - interface: "{{ internal_net_interface }}"
+    port: 9292
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for glance_api"
+  - interface: "{{ internal_net_interface }}"
+    port: 9511
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'magnum-api' in docker container 'magnum_api'"
+  - interface: "{{ internal_net_interface }}"
+    port: 9511
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for magnum_api"
+  - interface: "{{ internal_net_interface }}"
+    port: 9696
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'neutron-server' in docker container 'neutron_server'"
+  - interface: "{{ internal_net_interface }}"
+    port: 9696
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for neutron_server"
+  - interface: "{{ internal_net_interface }}"
+    port: 11211
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'memcached' in docker container 'memcached'"
+  - interface: "{{ internal_net_interface }}"
+    port: 11211
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for memcached"
+  - interface: "{{ internal_net_interface }}"
+    port: 15672
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'beam.smp' in docker container 'rabbitmq'"
+  - interface: "{{ internal_net_interface }}"
+    port: 15672
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for rabbitmq_management"
+  - interface: "{{ internal_net_interface }}"
+    port: 25672
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'beam.smp' in docker container 'rabbitmq'"
+  - interface: "{{ internal_net_interface }}"
+    port: 35357
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'httpd' in docker container 'keystone'"
+  - interface: "{{ internal_net_interface }}"
+    port: 35357
+    proto: tcp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for keystone_admin"
+  - interface: "{{ internal_net_name | net_interface }}"
+    port: 4444
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "Galera: For all other State Snapshot Transfer"
+  - interface: "{{ internal_net_name | net_interface }}"
+    port: 4568
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "Galera: Incremental State Transfer"
+  - interface: "{{ internal_net_name | net_interface }}"
+    port: 6080
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "serial console proxy (internal)"
+  - interface: "{{ internal_net_name | net_interface }}"
+    port: 9191
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "glance-api internal"
+  - interface: "{{ internal_net_name | net_interface }}"
+    port: 9197
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'mtail' in docker container 'prometheus_mtail'"
+  - interface: "{{ internal_net_name | net_interface }}"
+    port: 18080
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'cadvisor' in docker container 'prometheus_cadvisor'"
+  - interface: "{{ internal_net_name | net_interface }}"
+    port: 30001:32000
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "ironic nova serial consoles"
+  - interface: "{{ public_net_interface }}"
+    port: 80
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for horizon_external"
+  - interface: "{{ public_net_interface }}"
+    port: 443
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for horizon_external"
+  - interface: "{{ public_net_interface }}"
+    port: 5000
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for keystone_external"
+  - interface: "{{ public_net_interface }}"
+    port: 5050
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for ironic_inspector_external"
+  - interface: "{{ public_net_interface }}"
+    port: 5601
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for kibana_external"
+  - interface: "{{ public_net_interface }}"
+    port: 6080
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for nova_novncproxy_external"
+  - interface: "{{ public_net_interface }}"
+    port: 6083
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for nova_serialconsole_proxy_external"
+  - interface: "{{ public_net_interface }}"
+    port: 6385
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for ironic_api_external"
+  - interface: "{{ public_net_interface }}"
+    port: 6780
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for radosgw_external"
+  - interface: "{{ public_net_interface }}"
+    port: 8000
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for heat_api_cfn_external"
+  - interface: "{{ public_net_interface }}"
+    port: 8004
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for heat_api_external"
+  - interface: "{{ public_net_interface }}"
+    port: 8774
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for nova_api_external"
+  - interface: "{{ public_net_interface }}"
+    port: 8775
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for nova_metadata_external"
+  - interface: "{{ public_net_interface }}"
+    port: 8776
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for cinder_api_external"
+  - interface: "{{ public_net_interface }}"
+    port: 8780
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for placement_api_external"
+  - interface: "{{ public_net_interface }}"
+    port: 8786
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for manila_api_external"
+  - interface: "{{ public_net_interface }}"
+    port: 9292
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for glance_api_external"
+  - interface: "{{ public_net_interface }}"
+    port: 9511
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for magnum_api_external"
+  - interface: "{{ public_net_interface }}"
+    port: 9696
+    proto: tcp
+    destination: "{{ public_net_name | net_vip_address }}"
+    comment: "hint: used by 'haproxy' for neutron_server_external"
+  - interface: "{{ public_net_name | net_interface }}"
+    port: 6080
+    proto: tcp
+    destination: "{{ public_net_name | net_ip }}"
+    comment: "serial console proxy (public)"
+  - interface: "docker0"
+    port: 123
+    proto: udp
+    destination: "172.17.0.1"
+    comment: "hint: used by 'ntpd'"
+  - interface: "lo"
+    port: 123
+    proto: udp
+    destination: "127.0.0.1"
+    comment: "hint: used by 'ntpd'"
+  - interface: "lo"
+    port: 5140
+    proto: udp
+    destination: "127.0.0.1"
+    comment: "hint: used by 'fluentd' in docker container 'fluentd'"
+  - interface: "{{ inspection_net_interface }}"
+    port: 67
+    proto: udp
+    comment: "hint: used by 'dnsmasq' in docker container 'ironic_dnsmasq'"
+  - interface: "{{ internal_net_interface }}"
+    port: 69
+    proto: udp
+    comment: "hint: used by 'in.tftpd' in docker container 'ironic_pxe'"
+  - interface: "{{ internal_net_interface }}"
+    port: 123
+    proto: udp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'ntpd'"
+  - interface: "{{ internal_net_interface }}"
+    port: 123
+    proto: udp
+    destination: "{{ internal_net_name | net_vip_address }}"
+    comment: "hint: used by 'ntpd'"
+  - interface: "{{ internal_net_interface }}"
+    port: 5140
+    proto: udp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'fluentd' in docker container 'fluentd'"
+  - interface: "{{ tunnel_net_interface }}"
+    port: 4789
+    proto: udp
+    comment: "hint: used by 'unknown'"
+  - interface: "{{ internal_net_name | net_interface }}"
+    proto: vrrp
+    destination: "224.0.0.18"
+    comment: "used by keepalived for vrrp"

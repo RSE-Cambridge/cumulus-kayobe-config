@@ -1,0 +1,19 @@
+#jinja2: trim_blocks: "false", lstrip_blocks: "false"
+---
+
+firewallgen_enable_firewall: True
+
+firewallgen_ipv4_input_allow_rules:
+{% for rule in firewall_rules %}
+  - interface: "{{ rule.interface }}"
+{%+ if "port" in rule %}
+    port: {{ rule.port }}
+{% endif %}
+    proto: {{ rule.proto }}
+{%+ if rule.destination %}
+    destination: "{{ rule.destination }}"
+{% endif %}
+{%+ if rule.comment | default(False, True) %}
+    comment: "{{ rule.comment }}"
+{% endif %}
+{% endfor %}

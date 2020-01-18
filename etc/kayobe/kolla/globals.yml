@@ -61,7 +61,7 @@ caso_site_name: "UK-CAM-CUMULUS"
 # Container image tags.
 # These should be allowed to change independently, as services are updated.
 bifrost_tag: 7.1.2.38
-caso_tag: 7.1.2.38
+caso_tag: 7.0.1.10
 cron_tag: 7.1.2.38
 ceph_tag: 7.1.2.38
 cinder_tag: 7.1.2.38
@@ -87,9 +87,10 @@ magnum_tag: stein
 manila_tag: 7.1.2.38
 mariadb_tag: 7.1.2.38
 memcached_tag: 7.1.2.38
-monasca_tag: 7.1.2.38
-monasca_notification_tag: 7.1.2.38
-monasca_persister_tag: 7.1.2.38
+monasca_tag: 7.0.1.10
+monasca_grafana_tag: 7.0.1.10
+monasca_notification_tag: 7.0.1.10
+monasca_persister_tag: 7.0.1.10
 neutron_tag: 7.1.2.38
 nova_tag: 7.1.2.38
 octavia_tag: stein
@@ -98,7 +99,7 @@ prometheus_tag: 7.1.2.38
 prometheus_server_tag: 7.1.2.38
 prometheus_mtail_tag: 7.1.2.38
 prometheus_elasticsearch_exporter_tag: 7.1.2.38
-prometheus_libvirt_exporter_tag: 7.1.2.38
+prometheus_libvirt_exporter_tag: 7.0.1.10
 prometheus_jiralert_tag: 7.1.2.38
 rabbitmq_tag: 7.1.2.38
 skydive_tag: 7.1.2.38

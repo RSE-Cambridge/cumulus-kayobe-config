@@ -1,0 +1,61 @@
+[sender]
+# Either 'STOMP' for STOMP message brokers or 'AMS' for Argo Messaging Service
+protocol: {{ ssm_protocol }}
+
+[broker]
+
+{% if ssm_auto_broker is defined and ssm_auto_broker | bool %}
+# The SSM will query a BDII to find brokers available.  These details are for the
+# EGI production broker network
+bdii: ldap://lcg-bdii.cern.ch:2170
+network: PROD
+# Alternatively, 'host' and 'port' may be set manually (with 'bdii' and
+# 'network' commented out). This option must be used for AMS.
+#host:
+#port:
+{% else %}
+host: {{ ams_host }}
+{% endif %}
+
+# broker authentication.  If use_ssl is set, the certificates configured
+# in the mandatory [certificates] section will be used.
+use_ssl: true
+
+[certificates]
+certificate: /etc/grid-security/hostcert.pem
+key: /etc/grid-security/hostkey.pem
+capath: /etc/grid-security/certificates
+
+# If supplied, outgoing messages will be encrypted using this certificate.
+# May be used in addition to 'use_ssl'. If used, it must be the certificate of
+# the final server that's receiving your messages; not your own, nor the broker.
+#server_cert: /etc/grid-security/servercert.pem
+
+[messaging]
+{% if ssm_protocol == 'AMS' %}
+# If using AMS this is the project that SSM will connect to. Ignored for STOMP.
+ams_project: {{ ams_project }}
+
+# Queue to which SSM will send messages
+destination: {{ ams_destination }}
+
+# Token to use to authenticate
+token: {{ ams_token }}
+{% endif %}
+
+# Outgoing messages will be read and removed from this directory.
+path: /var/spool/apel/outgoing
+# If 'path_type' is set to 'dirq' (or if 'path_type' is omitted), the supplied
+# 'path' will be treated as a Python dirq (a directory based queue, which is a
+# port of the Perl module Directory::Queue).
+# If 'path_type' is set to 'directory', the supplied 'path' will be treated
+# as if it is a directory rather than a dirq.
+# As a result, 'path' cannot contain subdirectories.
+path_type: dirq
+
+[logging]
+logfile: /var/log/apel/ssmsend.log
+# Available logging levels:
+# DEBUG, INFO, WARN, ERROR, CRITICAL
+level: INFO
+console: true

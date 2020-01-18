@@ -1,0 +1,21 @@
+---
+# Disables the firewall
+
+- name: include rename-existing
+  include_tasks: rename-existing.yml
+  tags: always
+
+- block:
+  - name: Set default policy of ACCEPT to input chain
+    iptables:
+      chain: INPUT
+      policy: ACCEPT
+  - name: Set default policy of ACCEPT to output chain
+    iptables:
+      chain: OUTPUT
+      policy: ACCEPT
+  become: True
+
+- name: include delete-renamed
+  include_tasks: delete-renamed.yml
+  tags: always

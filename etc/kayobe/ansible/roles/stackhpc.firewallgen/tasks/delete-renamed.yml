@@ -1,0 +1,16 @@
+---
+
+- name: delete old chains (iptables)
+  # if this was tagged with delete you'd lock yourself out if you
+  # ran with --tags delete, as INPUT chain policy is DROP by default
+  # TODO: add logic to set policy to accept iff new rules weren't loaded
+  shell:
+    iptables-save | grep -v "deleteme_" | iptables-restore
+  become: True
+  tags: iptables
+
+- name: delete old chains (ip6tables)
+  shell:
+    ip6tables-save | grep -v "deleteme_" | ip6tables-restore
+  become: True
+  tags: ip6tables

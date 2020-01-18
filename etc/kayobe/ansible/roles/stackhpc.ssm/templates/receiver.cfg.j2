@@ -1,0 +1,43 @@
+[receiver]
+# Either 'STOMP' for STOMP message brokers or 'AMS' for Argo Messaging Service
+protocol: STOMP
+
+[broker]
+
+# The SSM will query a BDII to find brokers available.  These details are for the
+# EGI production broker network
+bdii: ldap://lcg-bdii.cern.ch:2170
+network: PROD
+# Alternatively, 'host' and 'port' can be set manually (with 'bdii' and
+# 'network' commented out). This option MUST be used for AMS.
+#host:
+#port:
+
+# broker authentication.  If use_ssl is set, the certificates configured
+# in the mandatory [certificates] section will be used.
+use_ssl: true
+
+[certificates]
+certificate: /etc/grid-security/hostcert.pem
+key: /etc/grid-security/hostkey.pem
+capath: /etc/grid-security/certificates
+check_crls: false
+
+[messaging]
+# If using AMS this is the project that SSM will connect to. Ignored for STOMP.
+ams_project:
+
+# Destination to which SSM will listen.
+destination: /queue/ssm2test
+
+# Accepted messages will be written to <path>/incoming
+# Rejected messages will be written to <path>/reject
+path: /var/spool/apel
+
+[logging]
+logfile: /var/log/apel/ssmreceive.log
+level: INFO
+console: false
+
+[daemon]
+pidfile: /var/run/apel/ssmreceive.pid

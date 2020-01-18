@@ -1,0 +1,24 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    pip_install_packages:
+      - name: docker
+    ssm_image: ssm
+    ssm_receiver_enabled: true
+    ssm_sender_enabled: true
+  pre_tasks:
+    - name: install dependencies
+      package:
+        name: "{{ item }}"
+      with_items:
+        - git
+  roles:
+    - geerlingguy.pip
+    - geerlingguy.docker
+    - role: stackhpc.ssm
+      vars:
+        ssm_action: build
+    - role: stackhpc.ssm
+      vars:
+        ssm_action: deploy
