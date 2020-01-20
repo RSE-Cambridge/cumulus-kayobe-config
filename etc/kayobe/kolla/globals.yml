@@ -83,7 +83,7 @@ keystone_tag: 7.1.2.38
 kibana_tag: 7.1.2.38
 kolla_toolbox_tag: 7.1.2.38
 logstash_tag: 7.1.2.38
-magnum_tag: stein
+magnum_tag: train
 manila_tag: 7.1.2.38
 mariadb_tag: 7.1.2.38
 memcached_tag: 7.1.2.38
@@ -99,7 +99,7 @@ prometheus_tag: 7.1.2.38
 prometheus_server_tag: 7.1.2.38
 prometheus_mtail_tag: 7.1.2.38
 prometheus_elasticsearch_exporter_tag: 7.1.2.38
-prometheus_libvirt_exporter_tag: 7.0.1.10
+prometheus_libvirt_exporter_tag: 7.0.1.6
 prometheus_jiralert_tag: 7.1.2.38
 rabbitmq_tag: 7.1.2.38
 skydive_tag: 7.1.2.38
