@@ -58,7 +58,7 @@ kolla_neutron_ml2_extension_drivers:
 # password: ansible_ssh_pass
 # key_file: not currently supported
 # secret: not currently supported
-kolla_neutron_ml2_generic_switch_hosts: "{{ groups['hs-switches'] }}"
+#kolla_neutron_ml2_generic_switch_hosts: "{{ groups['hs-switches'] }}"
 
 # Dict containing additional configuration for switches managed by the
 # genericswitch ML2 mechanism driver. For per-switch configuration of switches
