@@ -1,0 +1,10 @@
+---
+- name: Ensure oci-systemd-hook is installed
+  yum:
+    name: oci-systemd-hook
+    state: installed
+  become: true
+
+- name: Include tasks to create containers
+  include_tasks: create.yml
+  with_dict: "{{ ssm_services }}"

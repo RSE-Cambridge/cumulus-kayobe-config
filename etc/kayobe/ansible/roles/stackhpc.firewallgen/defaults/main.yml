@@ -1,0 +1,33 @@
+---
+# defaults file for stackhpc.firewallgen
+
+firewallgen_ipv4_input_allow_rules: []
+
+firewallgen_ipv6_input_allow_rules: []
+
+firewallgen_output_path: "{{ kayobe_config_path | dirname ~ '/firewallgen' }}"
+
+firewallgen_rules_path: /tmp/firewallgen-iptables.rules
+
+firewallgen_backup_path: /tmp/firewallgen-iptables.save
+
+firewallgen_ipv6_rules_path: /tmp/firewallgen-ip6tables.rules
+
+firewallgen_ipv6_backup_path: /tmp/firewallgen-ip6tables.save
+
+firewallgen_enable_firewall: False
+
+firewallgen_ipv4_input_allow_rewrite_rules: []
+
+firewallgen_library_pip_uri: git+https://github.com/stackhpc/firewallgen 
+
+firewallgen_enable_logging: True
+
+# list of network names to perform `net_name | net_vip_address`
+# and `net_name | net_vip_address` lookups against. If the
+# network_name doesn't refer to a variable it will be interpretted
+# as a string literal.
+firewallgen_networks: []
+
+# any custom rules not picked up by firewallgen
+firewallgen_ipv4_input_allow_custom_rules: []

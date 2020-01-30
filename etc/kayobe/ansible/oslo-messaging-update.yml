@@ -1,0 +1,20 @@
+---
+- name: Update oslo-messaging in all containers on nova-compute nodes
+  hosts: compute
+  become: true
+  user: centos
+
+  tasks:
+    - name: Update yum cache in containers
+      command: docker exec -u root -i "{{ item }}" /bin/bash -c 'yum makecache'
+      with_items:
+        - nova_compute
+        - nova_ssh
+        - neutron_openvswitch_agent
+
+    - name: Update oslo-messaging
+      command: docker exec -u root -i "{{ item }}" /bin/bash -c 'yum install -y python2-oslo-messaging'
+      with_items:
+        - nova_compute
+        - nova_ssh
+        - neutron_openvswitch_agent

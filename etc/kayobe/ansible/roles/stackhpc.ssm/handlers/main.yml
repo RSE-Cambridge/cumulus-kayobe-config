@@ -1,0 +1,11 @@
+---
+
+- name: Restart containers
+  docker_container:
+    name: "{{ item }}"
+    restart: true
+    state: started
+  # Prevent container from being started and then restarted
+  when:
+    - item not in ssm_containers_started | default([])
+  with_items: "{{ ssm_container_restart_list | default([]) | unique }}"

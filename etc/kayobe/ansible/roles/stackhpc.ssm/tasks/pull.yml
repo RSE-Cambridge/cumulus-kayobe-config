@@ -1,0 +1,10 @@
+---
+- name: Pulling SSM container image
+  docker_image:
+    name: "{{ item.value.image }}"
+    repository: "{{ item.value.image }}"
+    state: present
+  with_dict: "{{ ssm_services }}"
+  when:
+    - item.value.enabled
+    - ssm_action != 'destroy'

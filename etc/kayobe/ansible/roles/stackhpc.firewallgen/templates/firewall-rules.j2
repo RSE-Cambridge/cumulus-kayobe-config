@@ -1,0 +1,110 @@
+#jinja2: trim_blocks: "false", lstrip_blocks: "false"
+
+{%- macro iptables_common(chain, rule, action) -%}
+-A {{ chain }}{% if rule["in-interface"] | default(False) and rule["in-interface"] != "all" %} -i {{ rule["in-interface"] }}{% endif %}{% if rule["out-interface"] | default(False) and rule["out-interface"] != "all" %} -o {{ rule["out-interface"] }}{% endif %}{% if rule.source | default(False) %} -s {{ rule.source }}{% endif %}{% if rule.state | default(False) %} -m state --state {{ rule.state }}{% endif %}{% if rule.proto | default(False) %} -p {{ rule.proto }}{% if rule.proto in ["tcp", "udp"] %} -m {{ rule.proto }} --dport {{ rule.port }}{% endif %}{% endif %}{% if rule.destination | default(False) %} -d {{ rule.destination }}{% endif %} {{ action }}{% if rule.comment | default(False) %} -m comment --comment "{{ rule.comment }}"{% endif %}
+{%- endmacro -%}
+
+{%- macro iptables_accept(chain, rule) -%}
+{% set action="-j ACCEPT" %}
+{{ iptables_common(chain, rule, action) }}
+{%- endmacro -%}
+
+{%- macro iptables_snat(chain, rule) -%}
+{% set action="-j MASQUERADE" if not rule["to-source"] | default(False) else "-j SNAT --to-source %s" % rule['to-source'] %}
+{{ iptables_common(chain, rule, action) }}
+{%- endmacro -%}
+
+*security
+:INPUT ACCEPT
+:FORWARD ACCEPT
+:OUTPUT ACCEPT
+COMMIT
+
+*raw
+:PREROUTING ACCEPT
+:OUTPUT ACCEPT
+COMMIT
+
+*mangle
+:PREROUTING ACCEPT
+:INPUT ACCEPT
+:FORWARD ACCEPT
+:OUTPUT ACCEPT
+:POSTROUTING ACCEPT
+COMMIT
+
+*nat
+:PREROUTING ACCEPT
+:INPUT ACCEPT
+:OUTPUT ACCEPT
+:POSTROUTING ACCEPT
+:firewallgen_snat -
+{% set firewallgen_snat_rules =  firewallgen_ipv4_snat | default([]) if firewallgen_iptables_version == 4 else firewallgen_ipv6_snat | default([])%}
+{% for rule in firewallgen_snat_rules %}
+{{ iptables_snat("firewallgen_snat", rule) }}
+{% endfor %}
+-A POSTROUTING -j firewallgen_snat
+COMMIT
+
+*filter
+:INPUT DROP
+:FORWARD DROP
+:OUTPUT ACCEPT
+:DOCKER-USER -
+:firewallgen_input -
+:firewallgen_tcp -
+:firewallgen_udp  -
+:firewallgen_other -
+:firewallgen_forward -
+:firewallgen_reject -
+:firewallgen_docker -
+:firewallgen_fwreject -
+-A FORWARD -j firewallgen_forward
+{% set firewallgen_forward_rules =  firewallgen_ipv4_forward_allow | default([]) if firewallgen_iptables_version == 4 else firewallgen_ipv6_forward_allow | default([])%}
+{% for rule in firewallgen_forward_rules %}
+{{ iptables_accept("firewallgen_forward", rule) }}
+{% endfor %}
+{% set firewallgen_docker_rules = firewallgen_ipv4_docker_allow | default([]) if firewallgen_iptables_version == 4 else firewallgen_ipv6_docker_allow_allow | default([])%}
+{% for rule in firewallgen_docker_rules | default([]) %}
+{% set chain = "firewallgen_docker" -%}
+{{ iptables_accept(chain, rule) }}
+{% endfor %}
+{% if firewallgen_enable_logging %}
+-A firewallgen_fwreject -m limit --limit 2/min -j LOG --log-prefix "FORWARD-Dropped: " --log-level 4
+{% endif %}
+-A FORWARD -j firewallgen_fwreject
+-A FORWARD -j firewallgen_reject
+-A INPUT -j firewallgen_input
+-A firewallgen_input -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A firewallgen_input -i lo -j ACCEPT
+-A firewallgen_input -m conntrack --ctstate INVALID -j DROP
+{% if firewallgen_iptables_version == 4 %}
+-A firewallgen_input -p icmp -m icmp --icmp-type 8 -m conntrack --ctstate NEW -j ACCEPT
+{% else %}
+-A firewallgen_input -p ipv6-icmp --icmpv6-type 128 -m conntrack --ctstate NEW -j ACCEPT
+{% endif %}
+-A firewallgen_input -p udp -m conntrack --ctstate NEW -j firewallgen_udp
+-A firewallgen_input -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j firewallgen_tcp
+-A firewallgen_input -j firewallgen_other
+{% if firewallgen_enable_logging %}
+-A firewallgen_input -m limit --limit 2/min -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
+{% endif %}
+-A firewallgen_input -j firewallgen_reject
+{% if firewallgen_iptables_version == 4 %}
+-A firewallgen_reject -p udp -j REJECT --reject-with icmp-port-unreachable
+{% else %}
+-A firewallgen_reject -p udp -j REJECT --reject-with icmp6-adm-prohibited
+{% endif %}
+-A firewallgen_reject -p tcp -j REJECT --reject-with tcp-reset
+{% if firewallgen_iptables_version == 4 %}
+-A firewallgen_reject -j REJECT --reject-with icmp-proto-unreachable
+{% else %}
+-A firewallgen_reject -j REJECT --reject-with icmp6-adm-prohibited
+{% endif %}
+{% set firewallgen_rules =  firewallgen_ipv4_input_allow_rules if firewallgen_iptables_version == 4 else firewallgen_ipv6_input_allow_rules %}
+{%+ for rule in firewallgen_rules %}
+{% set chain = "firewallgen_" ~ (rule.proto if rule.proto in ["tcp", "udp"] else "other") %}
+{% set x=rule.__setitem__("in-interface", rule.interface) if 'interface' in rule %}
+{{ iptables_accept(chain, rule) }}
+{% endfor %}
+COMMIT

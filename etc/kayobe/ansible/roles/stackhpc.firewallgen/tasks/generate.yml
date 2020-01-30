@@ -1,0 +1,151 @@
+---
+
+- name: install system packages
+  package:
+    name:
+      - python-virtualenv
+      - git
+      - gcc #unfortuantly needed for psutil, use wheel?
+    state: present
+  become: True
+
+- name: remove /tmp/venv/firewallgen
+  file:
+    path: /tmp/venv/firewallgen
+    state: absent
+
+- name: Set up virtualenv
+  pip:
+    name:
+      - "{{ firewallgen_library_pip_uri }}"
+      - jinja2
+      - docker
+    virtualenv: /tmp/venv/firewallgen
+  state: forcereinstall
+
+- name: Set fact containing default interface map
+  set_fact:
+    default_network_map:
+      '127.0.0.1': 'lo'
+
+- name: get virtual interfaces address map
+  set_fact:
+    vip_addresses:  "{{ vip_addresses | default({}) | combine({ vip: item }) }}"
+  vars:
+    vip: "{{ item | net_vip_address }}"
+  when: vip | default(False, True)
+  with_items: "{{ network_interfaces }}"
+
+- name: register vip_reverse_map default value
+  set_fact:
+    vip_reverse_map: {}
+
+- name: register vip_reverse_map
+  set_fact:
+    vip_reverse_map:  "{{ vip_reverse_map  | combine({ vip: value }) }}"
+  vars:
+    vip: "{{ hostvars[inventory_hostname][item] | net_vip_address if item in hostvars[inventory_hostname] else item | net_vip_address }}"
+    value: "{{ item if item in hostvars[inventory_hostname] else item | single_quote }}"
+  when: vip | default(False, True)
+  with_items: "{{ firewallgen_networks }}"
+
+- name: register ip_reverse_map default value
+  set_fact:
+    ip_reverse_map: {}
+
+- name: register ip_reverse_map
+  set_fact:
+    ip_reverse_map:  "{{ ip_reverse_map  | combine({ ip: value }) }}"
+  vars:
+    ip: "{{ hostvars[inventory_hostname][item] | net_ip if item in hostvars[inventory_hostname] else item | net_ip }}"
+    value: "{{ item if item in hostvars[inventory_hostname] else item | single_quote }}"
+  when: ip | default(False, True)
+  with_items: "{{ firewallgen_networks }}"
+
+- name: network_interface_map
+  set_fact:
+    ip_map: "{{ ip_map | default({}) | combine({item | net_ip : item })}}"
+  with_items: "{{ network_interfaces }}"
+
+- name: Combine virtual and default maps
+  set_fact:
+    network_allocations: "{{ vip_addresses | combine(ip_map) }}"
+
+- debug:
+    msg: "{{ network_allocations }}"
+
+- name: vip reverse map
+  debug:
+    msg: "{{ vip_reverse_map }}"
+
+- name: ip reverse map
+  debug:
+    msg: "{{ ip_reverse_map }}"
+
+- name: run firewallgen
+  vars:
+    ansible_python_interpreter: /tmp/venv/firewallgen/bin/python
+  firewallgen:
+    ip_to_interface_map: "{{ default_network_map }}"
+    ip_version: 4
+  register: firewallgen
+  become: True
+
+- name: make sure output directory exists
+  file:
+    path: "{{ firewallgen_output_path }}"
+    state: directory
+  delegate_to: localhost
+
+- name: set initial value for sockets_rewrite
+  # need to set this in case of no rewrite rules
+  set_fact:
+    sockets_rewrite: "{{ firewallgen.sockets }}"
+
+- name: rewrite sockets
+  set_fact:
+    sockets_rewrite: "{{ sockets_rewrite | to_json | jq(item) }}"
+  with_items: "{{ firewallgen_ipv4_input_allow_rewrite_rules }}"
+
+- name: write out sockets before rewriting
+  shell:
+    cmd: |
+      cat <<EOF > /tmp/firewallgen-sockets
+      {{ firewallgen.sockets | to_json }}
+      EOF
+  when: debug | default(False)
+
+- name: write out sockets after rewriting
+  shell:
+    cmd: |
+      cat <<EOF > /tmp/firewallgen-sockets-rewrite
+      {{ sockets_rewrite | to_json }}
+      EOF
+  when: debug | default(False)
+
+- name: rewrite network ip
+  set_fact:
+    sockets_network_rewrite: "{{ sockets_network_rewrite | default([]) + [(item | combine({'ip': network_ip, 'interface': interface}))] }}"
+  vars:
+    dest: "{{ item['ip'] }}"
+    interface: "{% if dest in network_allocations %}{{ '{{ ' ~ network_allocations[dest] ~ '_interface }}'}}{% else %}{{item['interface']}}{% endif %}"
+    network_ip: "{% if dest in ip_reverse_map %}{{ '{{ ' ~ ip_reverse_map[dest] ~ ' | net_ip }}' }}{% elif dest in vip_reverse_map %}{{ '{{ ' ~ vip_reverse_map[dest] ~ ' | net_vip_address }}'}}{% else %}{{ dest }}{% endif %}"
+  when: dest != None
+  with_items: "{{ sockets_rewrite }}"
+
+- name: transform opensockets to rules
+  set_fact:
+    firewallgen_rules: "{{ (sockets_network_rewrite | firewallgen_rules) + firewallgen_ipv4_input_allow_custom_rules }}"
+
+- name: debug custom rules
+  debug:
+    msg: "{{ firewallgen_ipv4_input_allow_custom_rules }}"
+  when: debug | default(False)
+
+- name: output template
+  vars:
+    firewall_rules: "{{ firewallgen_rules | unique | sort_multi('proto', 'interface', 'port', 'destination') }}"
+  template:
+    src: rules-to-config.j2
+    dest: "{{ firewallgen_output_path ~ '/' ~ inventory_hostname }}"
+  delegate_to: localhost

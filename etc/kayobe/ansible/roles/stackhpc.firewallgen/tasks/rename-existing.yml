@@ -1,0 +1,13 @@
+---
+
+- name: Rename old chains (iptables)
+  include_tasks: rename.yml
+  tags: always
+  vars:
+    iptables_cmd: iptables
+
+- name: Rename old rules (ip6tables)
+  include_tasks: rename.yml
+  tags: always
+  vars:
+    iptables_cmd: ip6tables

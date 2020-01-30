@@ -1,0 +1,124 @@
+---
+# Roughly follows kolla-ansible's service deployment patterns.
+
+# Action to perform. One of 'deploy', 'destroy', 'pull', 'reconfigure',
+# 'upgrade'.
+ssm_action: deploy
+
+# If using AMS, define this and destination host and queue
+ssm_protocol:
+ams_host:
+ams_destination:
+ams_project:
+ams_token:
+
+# Check whether to use BDII to find available brokers
+ssm_auto_broker: false
+
+# Whether the SSM receiver should enabled.
+ssm_receiver_enabled: false
+
+# Whether the SSM sender should enabled.
+ssm_sender_enabled: false
+
+# Service deployment definition.
+ssm_services:
+  ssm_receiver:
+    container_name: ssm_receiver
+    enabled: "{{ ssm_receiver_enabled }}"
+    image: "{{ ssm_image_full }}"
+    command: ssmreceive
+    tmpfs:
+      - "/run"
+      - "/tmp"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{ ssm_config_path }}/receiver.cfg:/etc/apel/receiver.cfg:ro"
+      - "{{ ssm_config_path }}/dns:/etc/apel/dns:ro"
+      - "{{ ssm_incoming_volume }}:/var/spool/apel/incoming"
+      - "/etc/grid-security:/etc/grid-security:ro"
+      - "ssm_logs:/var/log/apel"
+    config_files:
+      - src: "{{ ssm_receiver_config }}"
+        basename: receiver.cfg
+      - src: "{{ ssm_dns_config }}"
+        basename: dns
+
+  ssm_sender:
+    container_name: ssm_sender
+    enabled: "{{ ssm_sender_enabled }}"
+    image: "{{ ssm_image_full }}"
+    # ssmsend will return a zero exit code even if an error occured. I was hoping
+    # that by using set -e, we would cause the docker container to report that
+    # it was in the restarting state. This would offer a generic way to
+    # monitor the health of the container. As it is, the only way to detect
+    # an error would be to scrape the log output.
+    command: sh -c 'set -eu; while true; do ssmsend; sleep {{ ssm_send_delay }}; done'
+    tmpfs:
+      - "/run"
+      - "/tmp"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{ ssm_config_path }}/sender.cfg:/etc/apel/sender.cfg:ro"
+      - "{{ ssm_outgoing_volume }}:/var/spool/apel/outgoing"
+      - "/etc/grid-security:/etc/grid-security:ro"
+      - "ssm_logs:/var/log/apel"
+    config_files:
+      - src: "{{ ssm_sender_config }}"
+        basename: sender.cfg
+
+# Image used to create the container.
+ssm_image:
+ssm_tag: "latest"
+ssm_image_full: "{{ ssm_image }}:{{ ssm_tag }}"
+
+# Container restart policy.
+ssm_restart_policy: "unless-stopped"
+ssm_restart_retries: 10
+
+# Path to a directory on the remote host to store configuration.
+ssm_config_path: "/etc/apel"
+
+# The following variables are relevant only when 'ssm_action' is 'build':
+
+# Service image definition.
+ssm_images:
+  ssm:
+    name: "{{ ssm_image_full }}"
+    buildargs: {}
+    repo:
+      url: "{{ ssm_repo_url }}"
+      version: "{{ ssm_repo_version }}"
+
+# URL of the git repo containing the image.
+ssm_repo_url: "https://github.com/apel/ssm"
+
+# Version to check out for the git repo containing the image.
+ssm_repo_version: master
+
+# Path to a directory in which to check out the git repo.
+ssm_repo_checkout_path: /tmp
+
+# Whether to push images after they have been built.
+ssm_push: false
+
+# Volume names
+ssm_outgoing_volume: ssm_outgoing
+ssm_incoming_volume: ssm_incoming
+
+# Whether to build the image even if an image of the same name and tag exists.
+ssm_force_rebuild: false
+
+# Path to a jinja templated version of https://github.com/apel/ssm/blob/a4c26291537b49feda052c45dff31b342bd7392f/conf/sender.cfg  # noqa
+ssm_sender_config: sender.cfg.j2
+
+# Path to a jinja templated version of https://github.com/apel/ssm/blob/a4c26291537b49feda052c45dff31b342bd7392f/conf/dns  # noqa
+ssm_dns_config: dns.j2
+
+# Path to a jinja templated version of https://github.com/apel/ssm/blob/a4c26291537b49feda052c45dff31b342bd7392f/conf/receiver.cfg # noqa
+ssm_receiver_config: receiver.cfg.j2
+
+# Delay in between calls to ssmsend in the same format as sleep.
+# SUFFIX may be 's' for seconds (the default), 'm' for minutes, 'h' for hours or 'd' for days
+# See: man sleep
+ssm_send_delay: 1m

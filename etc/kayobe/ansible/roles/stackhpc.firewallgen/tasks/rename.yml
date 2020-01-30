@@ -1,0 +1,24 @@
+---
+
+- block:
+  - name: Get list of chains for a given table
+    shell:
+      cmd: |
+        {{ iptables_cmd }} -L -t {{ item }} | grep "^Chain firewallgen" | awk '{print $2}'
+    with_items: "{{ firewallgen_iptables_tables }}"
+    register: chains
+  - name: create table to chain map
+    set_fact:
+      table_to_chains: "{{ table_to_chains | default({}) | combine({item[0] : item[1].stdout_lines}) }}"
+    with_together:
+      - "{{ firewallgen_iptables_tables }}"
+      - "{{ chains.results }}"
+  - name: Rename chains
+    include_tasks: rename-chains.yml
+    with_items: "{{ firewallgen_iptables_tables }}"
+    loop_control:
+      loop_var: table
+  become: True
+  tags:
+    - delete
+    - "{{ 'ip6tables' if iptables_cmd == 'ip6tables' else 'iptables' }}"
