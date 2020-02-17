@@ -60,51 +60,51 @@ caso_site_name: "UK-CAM-CUMULUS"
 
 # Container image tags.
 # These should be allowed to change independently, as services are updated.
-bifrost_tag: 8.0.1.1
-caso_tag: 8.0.1.1
-cron_tag: 8.0.1.1
-ceph_tag: 8.0.1.1
-cinder_tag: 8.0.1.1
-chrony_tag: 8.0.1.1
-designate_tag: 8.0.1.1
-elasticsearch_tag: 8.0.1.1
-fluentd_tag: 8.0.1.1
-glance_tag: 8.0.1.1
-grafana_tag: 8.0.1.1
-haproxy_tag: 8.0.1.1
-heat_tag: 8.0.1.1
-horizon_tag: 8.0.1.1
-influxdb_tag: 8.0.1.1
-ironic_tag: 8.0.1.1
-iscsid_tag: 8.0.1.1
-kafka_tag: 8.0.1.1
-keepalived_tag: 8.0.1.1
-keystone_tag: 8.0.1.1
-kibana_tag: 8.0.1.1
-kolla_toolbox_tag: 8.0.1.1
-logstash_tag: 8.0.1.1
-magnum_tag: train
-manila_tag: 8.0.1.1
-mariadb_tag: 8.0.1.1
-memcached_tag: 8.0.1.1
-monasca_tag: 8.0.1.1
-monasca_grafana_tag: 8.0.1.1
-monasca_notification_tag: 8.0.1.1
-monasca_persister_tag: 8.0.1.1
-neutron_tag: 8.0.1.1
-nova_tag: 8.0.1.1
-octavia_tag: stein
-openvswitch_tag: 8.0.1.1
-prometheus_tag: 8.0.1.1
-prometheus_server_tag: 8.0.1.1
-prometheus_mtail_tag: 8.0.1.1
-prometheus_elasticsearch_exporter_tag: 8.0.1.1
-prometheus_libvirt_exporter_tag: 8.0.1.1
-prometheus_jiralert_tag: 8.0.1.1
-rabbitmq_tag: 8.0.1.1
-skydive_tag: 8.0.1.1
-storm_tag: 8.0.1.1
-zookeeper_tag: 8.0.1.1
+barbican_tag: 9.0.1.1
+bifrost_tag: 9.0.1.1
+caso_tag: 9.0.1.1
+cron_tag: 9.0.1.1
+ceph_tag: 9.0.1.1
+cinder_tag: 9.0.1.1
+chrony_tag: 9.0.1.1
+designate_tag: 9.0.1.1
+elasticsearch_tag: 9.0.1.1
+fluentd_tag: 9.0.1.1
+glance_tag: 9.0.1.1
+grafana_tag: 9.0.1.1
+haproxy_tag: 9.0.1.1
+heat_tag: 9.0.1.1
+horizon_tag: 9.0.1.1
+influxdb_tag: 9.0.1.1
+ironic_tag: 9.0.1.1
+iscsid_tag: 9.0.1.1
+kafka_tag: 9.0.1.1
+keepalived_tag: 9.0.1.1
+keystone_tag: 9.0.1.1
+kibana_tag: 9.0.1.1
+kolla_toolbox_tag: 9.0.1.1
+logstash_tag: 9.0.1.1
+octavia_tag: 9.0.1.1
+magnum_tag: 9.0.1.1     
+manila_tag: 9.0.1.1
+mariadb_tag: 9.0.1.1
+memcached_tag: 9.0.1.1
+monasca_tag: 9.0.1.1
+monasca_notification_tag: 9.0.1.1
+monasca_persister_tag: 9.0.1.1
+neutron_tag: 9.0.1.1
+nova_tag: 9.0.1.1
+openvswitch_tag: 9.0.1.1
+prometheus_tag: 9.0.1.1
+prometheus_server_tag: 9.0.1.1
+prometheus_mtail_tag: 9.0.1.1
+prometheus_elasticsearch_exporter_tag: 9.0.1.1
+prometheus_libvirt_exporter_tag: 9.0.1.1
+prometheus_jiralert_tag: 9.0.1.1
+rabbitmq_tag: 9.0.1.1
+skydive_tag: 9.0.1.1
+storm_tag: 9.0.1.1
+zookeeper_tag: 9.0.1.1
 
 # Kayobe currently configures ntpd on each node in the overcloud
 enable_chrony: false
@@ -115,13 +115,3 @@ es_heap_size: "24g"
 
 # Reduce the kolla-ansible token expiry default from one day to one hour
 fernet_token_expiry: 3600
-
-# Use upstream magnum images for these
-magnum_api_image: "{% raw %}kolla/{{ kolla_base_distro }}-{{ magnum_install_type }}-magnum-api{% endraw %}"
-magnum_conductor_image: "{% raw %}kolla/{{ kolla_base_distro }}-{{ magnum_install_type }}-magnum-conductor{% endraw %}"
-
-# Use upstream octavia images for these
-octavia_api_image: "{% raw %}kolla/{{ kolla_base_distro }}-{{ octavia_install_type }}-octavia-api{% endraw %}"
-octavia_housekeeping_image: "{% raw %}kolla/{{ kolla_base_distro }}-{{ octavia_install_type }}-octavia-housekeeping{% endraw %}"
-octavia_worker_image: "{% raw %}kolla/{{ kolla_base_distro }}-{{ octavia_install_type }}-octavia-worker{% endraw %}"
-octavia_health_manager_image: "{% raw %}kolla/{{ kolla_base_distro }}-{{ octavia_install_type }}-octavia-health-manager{% endraw %}"

@@ -15,7 +15,7 @@ kolla_source_url: https://github.com/RSE-Cambridge/kolla
 
 # Version (branch, tag, etc.) of Kolla source code repository if type is
 # 'source'. Default is {{ openstack_branch }}.
-kolla_source_version: cumulus/stein
+kolla_source_version: cumulus/train
 
 # Path to virtualenv in which to install kolla.
 #kolla_venv:
@@ -37,7 +37,7 @@ kolla_ansible_source_url: https://github.com/RSE-Cambridge/kolla-ansible
 
 # Version (branch, tag, etc.) of Kolla Ansible source code repository if type
 # is 'source'. Default is {{ openstack_branch }}.
-kolla_ansible_source_version: cumulus/stein
+kolla_ansible_source_version: cumulus/train
 
 # Path to virtualenv in which to install kolla-ansible.
 #kolla_ansible_venv:
@@ -74,7 +74,7 @@ kolla_docker_namespace: rse-cambridge
 
 # Kolla OpenStack release version. This should be a Docker image tag.
 # Default is {{ openstack_release }}.
-kolla_openstack_release:  8.0.1.1
+kolla_openstack_release: 9.0.1.1
 
 # Dict mapping names of sources to their definitions for
 # kolla_install_type=source. See kolla.common.config for details.
@@ -93,10 +93,12 @@ kolla_openstack_release:  8.0.1.1
 #kolla_build_blocks:
 kolla_build_blocks:
   neutron_server_footer: |
-    RUN pip install git+https://github.com/stackhpc/networking-generic-switch@stackhpc/1.3.1.1 -c https://releases.openstack.org/constraints/upper/stein
+    RUN pip install git+https://github.com/stackhpc/networking-generic-switch@stackhpc/2.1.0.1 -c https://releases.openstack.org/constraints/upper/train
   prometheus_server_repository_version: |
     # Avoid the pain of porting 1.x rules and migrating data to 2.x
     ARG prometheus_version='2.8.0'
+  prometheus_cadvisor_repository_version: |
+    ENV prometheus_cadvisor_version=0.35.0
   prometheus_libvirt_exporter_version: |
     ARG prometheus_libvirt_exporter_version=0.1.1.1
     ARG prometheus_libvirt_exporter_url=https://github.com/stackhpc/libvirt_exporter/archive/${prometheus_libvirt_exporter_version}.tar.gz
