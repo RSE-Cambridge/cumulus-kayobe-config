@@ -8,8 +8,6 @@ ctrl2 ipmi_address=10.202.0.6 bmc_type=idrac
 ctrl3 ipmi_address=10.202.0.9 bmc_type=idrac
 
 [baremetal-compute]
-cpu-e-1044 ipmi_address=10.202.0.33 bmc_type=idrac
-cpu-e-1081 ipmi_address=10.202.0.34 bmc_type=idrac
 
 # TODO: split out network once we get net2 online
 #[network]
@@ -50,10 +48,15 @@ cpu-e-1082 ipmi_address=10.202.0.35 bmc_type=idrac
 cpu-e-1083 ipmi_address=10.202.0.36 bmc_type=idrac
 cpu-e-1084 ipmi_address=10.202.0.37 bmc_type=idrac
 
+[compute-mar20]
+cpu-e-1044 ipmi_address=10.202.0.33 bmc_type=idrac
+#FAULT cpu-e-1081 ipmi_address=10.202.0.34 bmc_type=idrac
+
 [compute:children]
 compute-apr19
 compute-jun19
 compute-aug19
+compute-mar20
 
 # only put monitoring on ceph nodes
 # as we use ceph-ansible
