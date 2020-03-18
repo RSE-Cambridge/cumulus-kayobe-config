@@ -258,7 +258,3 @@ tunnel_net_ips:
   mon1: 10.217.1.0
   net1: 10.217.1.4
   net2: 10.217.1.12
-octavia_net_ips:
-  ctrl1: 10.208.1.0
-  ctrl2: 10.208.1.1
-  ctrl3: 10.208.1.2
