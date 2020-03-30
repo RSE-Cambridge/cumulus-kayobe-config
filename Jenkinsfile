@@ -1,3 +1,9 @@
+
+if (!params.COMMAND){
+    // Fail early
+    error("You must set the COMMAND parameter")
+}
+
 pipeline {
     options { disableConcurrentBuilds() }
     agent { label 'docker' }
@@ -11,11 +17,6 @@ pipeline {
     environment {
         REGISTRY = "${params.DOCKER_REGISTRY}"
         KAYOBE_IMAGE = "${currentBuild.projectName}:${env.GIT_COMMIT}"
-    }
-
-    if (!params.COMMAND){
-        // Fail early
-        error("You must set the COMMAND parameter")
     }
 
     stages {
