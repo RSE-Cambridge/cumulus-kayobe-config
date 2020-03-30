@@ -21,6 +21,9 @@ pipeline {
 
     stages {
         stage('Build and Push') {
+            environment {
+                KAYOBE_VAULT_PASSWORD = "${params.KAYOBE_VAULT_PASSWORD}"
+            }
             steps {
                 script {
                     def kayobeImage = docker.build("$KAYOBE_IMAGE")
