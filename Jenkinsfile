@@ -23,7 +23,7 @@ pipeline {
         stage('Build and Push') {
             steps {
                 script {
-                    def kayobeImage = docker.build("$KAYOBE_IMAGE", "-e KAYOBE_VAULT_PASSWORD=${params.KAYOBE_VAULT_PASSWORD}")
+                    def kayobeImage = docker.build("$KAYOBE_IMAGE")
                     docker.withRegistry("$REGISTRY") {
                         kayobeImage.push()
                         kayobeImage.push('latest')
