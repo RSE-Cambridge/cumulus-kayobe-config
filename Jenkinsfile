@@ -70,7 +70,6 @@ pipeline {
                     steps {
                         sh 'cp -R secrets/. /secrets'
                         sh '/bin/entrypoint.sh echo READY'
-                        sh 'sleep infinity'
                         sh '$VIRTUAL_ENV/bin/kayobe control host bootstrap'
                         sh '$VIRTUAL_ENV/bin/kayobe ${params.COMMAND}'
                     }
