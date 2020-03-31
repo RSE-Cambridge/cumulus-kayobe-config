@@ -35,7 +35,7 @@ ARG kayobe_repo='https://github.com/RSE-Cambridge/kayobe'
 RUN git clone $kayobe_repo -b $kayobe_version $SRC_PATH/kayobe
 
 RUN pip install -U pip && \
-    pip install -U $SRC_PATH/kayobe
+    pip install -U $SRC_PATH/kayobe -c https://releases.openstack.org/constraints/upper/train
 
 ENV KAYOBE_CONFIG_ROOT=$SRC_PATH/kayobe_config
 COPY --chown=stack:stack . $KAYOBE_CONFIG_ROOT
