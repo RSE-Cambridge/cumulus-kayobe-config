@@ -1,7 +1,7 @@
 FROM centos:7
 MAINTAINER isaac@stackhpc.com
 RUN yum update -y && \
-    yum install -y python-devel python-virtualenv gcc libffi-devel libselinux-python git sudo which && \
+    yum install -y python-yaml python-devel python-virtualenv gcc libffi-devel libselinux-python git sudo which && \
     yum clean all
 
 ENV KAYOBE_USER=stack
