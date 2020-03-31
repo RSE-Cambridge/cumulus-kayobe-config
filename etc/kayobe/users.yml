@@ -14,6 +14,7 @@ users_default:
       - "{{ lookup('file', kayobe_config_path ~ '/ssh-keys/id_rsa_stackhpc-doug-seed.pub') }}"
       - "{{ lookup('file', kayobe_config_path ~ '/ssh-keys/id_rsa_stackhpc-pierre.pub') }}"
       - "{{ lookup('file', kayobe_config_path ~ '/ssh-keys/id_rsa_stackhpc-will.pub') }}"
+      - "{{ lookup('file', kayobe_config_path ~ '/ssh-keys/id_rsa_jenkins.pub') }}"
 
   - username: kolla
     name: Kolla deployment user
@@ -26,6 +27,7 @@ users_default:
       - "{{ lookup('file', kayobe_config_path ~ '/ssh-keys/id_rsa_stackhpc-doug-seed.pub') }}"
       - "{{ lookup('file', kayobe_config_path ~ '/ssh-keys/id_rsa_stackhpc-pierre.pub') }}"
       - "{{ lookup('file', kayobe_config_path ~ '/ssh-keys/id_rsa_stackhpc-will.pub') }}"
+      - "{{ lookup('file', kayobe_config_path ~ '/ssh-keys/id_rsa_jenkins.pub') }}"
 
   - username: jmfg2
     name: John Garbutt
