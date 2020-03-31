@@ -36,3 +36,11 @@ firewallgen_ipv4_input_allow_custom_rules_seed:
    proto: tcp
    destination: "{% raw %}{{ ilab_net_name | net_ip }}{% endraw %}"
    comment: SSH via ILAB
+ # This is needed for jenkins to be able to connect back to the seed where it is running.
+ # It may be desirable to use a dedicated network for the kayobe containers if you have 
+ # other containers that you don't want to be able to do this.
+ - source: 172.17.0.0/16
+   port: 22
+   proto: tcp
+   destination: "{% raw %}{{ ilab_net_name | net_ip }}{% endraw %}"
+   comment: SSH from docker default network
