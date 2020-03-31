@@ -1,9 +1,3 @@
-
-if (!params.COMMAND){
-    // Fail early
-    error("You must set the COMMAND parameter")
-}
-
 pipeline {
     options { disableConcurrentBuilds() }
     agent { label 'docker' }
@@ -20,6 +14,18 @@ pipeline {
     }
 
     stages {
+        // Do parameter validation in a stage so that the git checkout of the pipeline still works.
+        // This is necessary to update the build parameters.
+        stage('Validate parameters') {
+            steps {
+                script {
+                    if (!params.COMMAND){
+                        // Fail early
+                        error("You must set the COMMAND parameter")
+                    }
+                }
+            }
+        }
         stage('Build and Push') {
             steps {
                 script {
