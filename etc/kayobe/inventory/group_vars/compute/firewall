@@ -48,6 +48,11 @@ firewallgen_ipv4_input_allow_rules:
     destination: "{{ internal_net_name | net_ip }}"
     comment: "hint: used by 'mtail' in docker container 'prometheus_mtail'"
   - interface: "{{ internal_net_name | net_interface }}"
+    port: 10000:20000
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "Nova serial console proxy"
+  - interface: "{{ internal_net_name | net_interface }}"
     port: 18080
     proto: tcp
     destination: "{{ internal_net_name | net_ip }}"
