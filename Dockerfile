@@ -47,6 +47,8 @@ ENV KOLLA_CONFIG_PATH=$KAYOBE_CONFIG_ROOT/etc/kolla
 ENV KOLLA_SOURCE_PATH=$SRC_PATH/kolla-ansible
 ENV KOLLA_VENV_PATH=$VENVS_PATH/kolla-ansible
 
-RUN rm -rf $HOME/.ssh
+# Strip the secrets so that we don't need to pass in a vault-password
+RUN grep -lR "\$ANSIBLE_VAULT" "$KAYOBE_CONFIG_PATH" | xargs rm && \
+    kayobe control host bootstrap && rm -rf $HOME/.ssh
 
 ENTRYPOINT ["/bin/entrypoint.sh"]

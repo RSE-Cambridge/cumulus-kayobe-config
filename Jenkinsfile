@@ -76,7 +76,6 @@ pipeline {
                     steps {
                         sh 'cp -R secrets/. /secrets'
                         sh '/bin/entrypoint.sh echo READY'
-                        sh 'kayobe control host bootstrap'
                         sh "${params.COMMAND}"
                     }
                 }
