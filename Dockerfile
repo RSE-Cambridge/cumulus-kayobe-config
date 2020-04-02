@@ -49,6 +49,7 @@ ENV KOLLA_VENV_PATH=$VENVS_PATH/kolla-ansible
 
 # Strip the secrets so that we don't need to pass in a vault-password
 RUN grep -lR "\$ANSIBLE_VAULT" "$KAYOBE_CONFIG_PATH" | xargs rm && \
-    kayobe control host bootstrap && rm -rf $HOME/.ssh
+    kayobe control host bootstrap && rm -rf $HOME/.ssh && \
+    pushd "$KAYOBE_CONFIG_ROOT" && git reset --hard && popd
 
 ENTRYPOINT ["/bin/entrypoint.sh"]
