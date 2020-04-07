@@ -54,6 +54,12 @@ ceph
 seed
 overcloud
 
+[docker-registry:children]
+# Hosts in this group will have a Docker Registry deployed. This group should
+# generally contain only a single host, to avoid deploying multiple independent
+# registries which may become unsynchronized.
+seed
+
 ###############################################################################
 # Baremetal compute node groups.
 

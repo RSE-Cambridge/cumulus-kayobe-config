@@ -20,7 +20,7 @@ firewallgen_networks: "{{ firewallgen_networks_kayobe_defaults + external_net_na
 firewallgen_interface_tmpl: !unsafe "{{ %s | net_interface }}"
 
 firewallgen_ipv4_input_allow_rewrite_rules_all:
-  - '. |= map( if .processes[].name == "sshd" then .interface = "{% raw %}{{ admin_oc_net_interface }}{% endraw %}" else . end)'
+  - '. | map( if .processes[].name == "sshd" then .interface = "{% raw %}{{ admin_oc_net_interface }}{% endraw %}" else . end)'
   # ntpd should only use the admin_oc_net_interface
   - >-
     . | map(select(.proto != "udp" or .port != 123 or
@@ -35,22 +35,30 @@ firewallgen_ipv4_input_allow_rewrite_rules_all:
   # never runs recv() and that we should block it externally.
   - '. | map(select(.proto != "udp" or .processes[].name != "rsyslogd"))'
   - >-
-    . |= map(if .processes[].name == "mtail" then
+    . | map(if .processes[].name == "mtail" then
         .interface = "{{ firewallgen_interface_tmpl % 'internal_net_name' }}" |
         .ip = "{% raw %}{{ internal_net_name | net_ip }}{% endraw %}"
       else . end)
   - >-
-    . |= map(if .processes[].name == "cadvisor" then
+    . | map(if .processes[].name == "cadvisor" then
         .interface = "{{ firewallgen_interface_tmpl % 'internal_net_name' }}" |
         .ip = "{% raw %}{{ internal_net_name | net_ip }}{% endraw %}"
       else . end)
 
 firewallgen_ipv4_input_allow_rewrite_rules: >-
   {{ firewallgen_ipv4_input_allow_rewrite_rules_all +
-     firewallgen_ipv4_input_allow_rewrite_rules_extra }}
+     firewallgen_ipv4_input_allow_rewrite_rules_seed | default([]) +
+     firewallgen_ipv4_input_allow_rewrite_rules_controllers | default([]) +
+     firewallgen_ipv4_input_allow_rewrite_rules_ceph | default([]) +
+     firewallgen_ipv4_input_allow_rewrite_rules_compute | default([]) +
+     firewallgen_ipv4_input_allow_rewrite_rules_monitoring | default([]) }}
 
 firewallgen_ipv4_input_allow_custom_rules_all: []
 
 firewallgen_ipv4_input_allow_custom_rules: >-
   {{ firewallgen_ipv4_input_allow_custom_rules_all +
-  firewallgen_ipv4_input_allow_custom_rules_extra | default([]) }}
+     firewallgen_ipv4_input_allow_custom_rules_seed | default([]) +
+     firewallgen_ipv4_input_allow_custom_rules_controllers | default([]) +
+     firewallgen_ipv4_input_allow_custom_rules_ceph | default([]) +
+     firewallgen_ipv4_input_allow_custom_rules_compute | default([]) +
+     firewallgen_ipv4_input_allow_custom_rules_monitoring | default([]) }}

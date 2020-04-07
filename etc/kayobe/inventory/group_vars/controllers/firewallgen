@@ -1,30 +1,23 @@
 ---
 
-firewallgen_ironic_serial_range_start: 30001
-firewallgen_ironic_serial_range_end: 32000
-
 firewallgen_ipv4_input_allow_rewrite_rules_controllers:
-  - '. |= map( if .processes[].name == "epmd" and .processes[].docker_hint == "rabbitmq" then .interface = "{% raw %}{{ internal_net_interface }}{% endraw %}" else . end)'
-  - '. |= map( if .processes[].name == "nginx" and .processes[].docker_hint == "inspection_store" then .interface = "{% raw %}{{ internal_net_interface }}{% endraw %}" else . end)'
-  - '. |= map( if .processes[].name == "dnsmasq" and .processes[].docker_hint == "ironic_dnsmasq" then .interface = "{% raw %}{{ inspection_net_interface }}{% endraw %}" else . end)'
-  - '. |= map( if .processes[].docker_hint == "ironic_pxe" then .interface = "{% raw %}{{ internal_net_interface }}{% endraw %}" else . end)'
+  - '(.[] | select(.processes[].docker_hint == "rabbitmq" and .processes[0].name == "epmd") | .interface) |= "{% raw %}{{ internal_net_interface }}{% endraw %}"'
+  - '(.[] | select(.processes[].docker_hint == "inspection_store" and .processes[0].name == "nginx") | .interface) |= "{% raw %}{{ internal_net_interface }}{% endraw %}"'
+  - '(.[] | select(.processes[].docker_hint == "ironic_dnsmasq" and .processes[0].name == "dnsmasq") | .interface) |= "{% raw %}{{ inspection_net_interface }}{% endraw %}"'
+  - '(.[] | select(.processes[].docker_hint == "ironic_pxe") | .interface) |= "{% raw %}{{ internal_net_interface }}{% endraw %}"'
   # FIXME: rpcbind required for manilla?
   - '. | map(select(.processes[].name != "rpcbind"))'
   # haproxy starts an ephemeral port for communicating with syslog
-  - '. |= map(select(.processes[].name != "haproxy" or .proto != "udp"))'
+  - '. | map(select(.processes[].name != "haproxy" or .proto != "udp"))'
   # port 111 is portmapper (an NFS service), FIXME: we probably need this for manilla
   - '. | map(select(.port != 111))'
-  - '. |= map(select(.processes[].haproxy_hint != "grafana_server_external"))'
-  - '. |= map(select(if .processes[].haproxy_hint? then .processes[].haproxy_hint | test("prometheus.*_external") | not else true end))'
+  - '. | map(select(.processes[].haproxy_hint != "grafana_server_external"))'
+  - '[(.[] | select(.processes[0].haproxy_hint // "" | test("prometheus.*_external") | not) )]'
   # VXLANs? : https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=4789
-  - '. |= map( if .port == 4789 then .interface = "{% raw %}{{ tunnel_net_interface }}{% endraw %}" else . end)'
-  - '. |= map( if .processes[].name == "httpd" and .processes[].docker_hint == "placement_api" then .interface = "{% raw %}{{ internal_net_interface }}{% endraw %}" else . end)'
+  - '. | map( if .port == 4789 then .interface = "{% raw %}{{ tunnel_net_interface }}{% endraw %}" else . end)'
+  - '(.[] | select(.processes[0].name == "httpd" and .processes[].docker_hint == "placement_api") | .interface) |= "{% raw %}{{ internal_net_interface }}{% endraw %}"'
 
-firewallgen_ipv4_input_allow_rewrite_rules: >
-  {{ firewallgen_ipv4_input_allow_rewrite_rules_controllers +
-  firewallgen_ipv4_input_allow_rewrite_rules_all }}
-
-firewallgen_ipv4_input_allow_custom_rules_extra:
+firewallgen_ipv4_input_allow_custom_rules_controllers:
   # Galera firewall rules: http://galeracluster.com/documentation-webpages/firewallsettings.html
   # We seemed to need these for: kayobe kolla ansible run mariadb_recovery
   # Galera: Incremental State Transfer
@@ -65,8 +58,3 @@ firewallgen_ipv4_input_allow_custom_rules_extra:
     destination: 224.0.0.18
     comment: used by keepalived for vrrp
 
-  - interface: "{{ firewallgen_interface_tmpl % 'internal_net_name' }}"
-    port: "{{ firewallgen_ironic_serial_range_start }}:{{ firewallgen_ironic_serial_range_end }}"
-    proto: tcp
-    destination: "{% raw %}{{ internal_net_name | net_ip }}{% endraw %}"
-    comment: ironic nova serial consoles 

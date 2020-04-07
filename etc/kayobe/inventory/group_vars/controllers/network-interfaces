@@ -48,11 +48,20 @@ external_net_interface: "{{ br_net_interface }}.{{ external_net_vlan }}"
 # Storage network IP information.
 storage_net_interface: "{{ br_net_interface }}.{{ storage_net_vlan }}"
 
+# Storage network IP information.
+# ceph_storage_net_interface:
+# ceph_storage_net_bridge_ports:
+# ceph_storage_net_bond_slaves:
+
 # Storage management network IP information.
 storage_mgmt_net_interface: "{{ br_net_interface }}.{{ storage_mgmt_net_vlan }}"
 
 # Octava load balancer sync network IP information
 octavia_net_interface: "{{ br_net_interface }}.{{ octavia_net_vlan }}"
+
+# swift_storage_net_interface:
+# swift_storage_net_bridge_ports:
+# swift_storage_net_bond_slaves:
 
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.

@@ -60,51 +60,51 @@ caso_site_name: "UK-CAM-CUMULUS"
 
 # Container image tags.
 # These should be allowed to change independently, as services are updated.
-bifrost_tag: 7.1.0-9
-caso_tag: 7.1.0-9
-cron_tag: 7.1.0-9
-ceph_tag: 7.1.0-9
-cinder_tag: 7.1.0-9
-chrony_tag: 7.1.0-9
-designate_tag: 7.1.0-9
-elasticsearch_tag: 7.1.0-9
-fluentd_tag: 7.1.0-9
-glance_tag: 7.1.0-9
-grafana_tag: 7.1.0-9
-haproxy_tag: 7.1.0-9
-heat_tag: 7.1.0-9
-horizon_tag: 7.1.0-9
-influxdb_tag: 7.1.0-9
-ironic_tag: 7.1.0-9
-iscsid_tag: 7.1.0-9
-kafka_tag: 7.1.0-9
-keepalived_tag: 7.1.0-9
-keystone_tag: 7.1.0-9
-kibana_tag: 7.1.0-9
-kolla_toolbox_tag: 7.1.0-9
-logstash_tag: 7.1.0-9
+bifrost_tag: 8.0.1.1
+caso_tag: 8.0.1.1
+cron_tag: 8.0.1.1
+ceph_tag: 8.0.1.1
+cinder_tag: 8.0.1.1
+chrony_tag: 8.0.1.1
+designate_tag: 8.0.1.1
+elasticsearch_tag: 8.0.1.1
+fluentd_tag: 8.0.1.1
+glance_tag: 8.0.1.1
+grafana_tag: 8.0.1.1
+haproxy_tag: 8.0.1.1
+heat_tag: 8.0.1.1
+horizon_tag: 8.0.1.1
+influxdb_tag: 8.0.1.1
+ironic_tag: 8.0.1.1
+iscsid_tag: 8.0.1.1
+kafka_tag: 8.0.1.1
+keepalived_tag: 8.0.1.1
+keystone_tag: 8.0.1.1
+kibana_tag: 8.0.1.1
+kolla_toolbox_tag: 8.0.1.1
+logstash_tag: 8.0.1.1
 magnum_tag: train
-manila_tag: 7.1.0-9
-mariadb_tag: 7.1.0-9
-memcached_tag: 7.1.0-9
-monasca_tag: 7.1.0-9
-monasca_grafana_tag: 7.1.0-9
-monasca_notification_tag: 7.1.0-9
-monasca_persister_tag: 7.1.0-9
-neutron_tag: 7.1.0-9
-nova_tag: 7.1.0-9
+manila_tag: 8.0.1.1
+mariadb_tag: 8.0.1.1
+memcached_tag: 8.0.1.1
+monasca_tag: 8.0.1.1
+monasca_grafana_tag: 8.0.1.1
+monasca_notification_tag: 8.0.1.1
+monasca_persister_tag: 8.0.1.1
+neutron_tag: 8.0.1.1
+nova_tag: 8.0.1.1
 octavia_tag: stein
-openvswitch_tag: 7.1.0-9
-prometheus_tag: 7.1.0-9
-prometheus_server_tag: 7.1.0-9
-prometheus_mtail_tag: 7.1.0-9
-prometheus_elasticsearch_exporter_tag: 7.1.0-9
-prometheus_libvirt_exporter_tag: 7.1.0-9
-prometheus_jiralert_tag: 7.1.0-9
-rabbitmq_tag: 7.1.0-9
-skydive_tag: 7.1.0-9
-storm_tag: 7.1.0-9
-zookeeper_tag: 7.1.0-9
+openvswitch_tag: 8.0.1.1
+prometheus_tag: 8.0.1.1
+prometheus_server_tag: 8.0.1.1
+prometheus_mtail_tag: 8.0.1.1
+prometheus_elasticsearch_exporter_tag: 8.0.1.1
+prometheus_libvirt_exporter_tag: 8.0.1.1
+prometheus_jiralert_tag: 8.0.1.1
+rabbitmq_tag: 8.0.1.1
+skydive_tag: 8.0.1.1
+storm_tag: 8.0.1.1
+zookeeper_tag: 8.0.1.1
 
 # Kayobe currently configures ntpd on each node in the overcloud
 enable_chrony: false
@@ -112,6 +112,9 @@ enable_host_ntp: true
 
 # Default size causes ES to fall over very easily
 es_heap_size: "24g"
+
+# Reduce the kolla-ansible token expiry default from one day to one hour
+fernet_token_expiry: 3600
 
 # Use upstream magnum images for these
 magnum_api_image: "{% raw %}kolla/{{ kolla_base_distro }}-{{ magnum_install_type }}-magnum-api{% endraw %}"

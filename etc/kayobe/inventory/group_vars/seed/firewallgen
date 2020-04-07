@@ -1,36 +1,36 @@
 ---
 
-firewallgen_ipv4_input_allow_rewrite_rules_extra:
+firewallgen_ipv4_input_allow_rewrite_rules_seed:
 # Xvnc is accessed via ssh
-  - '. |= map( if .processes[].name == "Xvnc" then .interface = "lo" else . end)'
+  - '. | map( if .processes[].name == "Xvnc" then .interface = "lo" else . end)'
 # this is systemd which will start portmapper
   - '. | map(select(.port != 111))'
 # ipxe server
-  - '. |= map( if .port == 8080 and .proto == "tcp"  then .interface = "{% raw %}{{ provision_oc_net_interface }}{% endraw %}" else . end)'
+  - '. | map( if .port == 8080 and .proto == "tcp"  then .interface = "{% raw %}{{ provision_oc_net_interface }}{% endraw %}" else . end)'
 # tftp
-  - '. |= map( if .port == 69 and .proto == "udp" then .interface = "{% raw %}{{ provision_oc_net_interface }}{% endraw %}" else . end)'
+  - '. | map( if .port == 69 and .proto == "udp" then .interface = "{% raw %}{{ provision_oc_net_interface }}{% endraw %}" else . end)'
 # ironic-api
-  - '. |= map( if .processes[].name == "ironic-api" then .interface = "{% raw %}{{ provision_oc_net_interface }}{% endraw %}" else . end)'
+  - '. | map( if .processes[].name == "ironic-api" then .interface = "{% raw %}{{ provision_oc_net_interface }}{% endraw %}" else . end)'
 # dhcp
-  - '. |= map( if .port == 67 and .proto == "udp" then .interface = "{% raw %}{{ provision_oc_net_interface }}{% endraw %}" else . end)'
+  - '. | map( if .port == 67 and .proto == "udp" then .interface = "{% raw %}{{ provision_oc_net_interface }}{% endraw %}" else . end)'
 # ironic-inspector
-  - '. |= map( if .port == 5050 and .proto == "tcp"  then .interface = "lo" else . end)'
+  - '. | map( if .port == 5050 and .proto == "tcp"  then .interface = "lo" else . end)'
 # erlang port mapper daemon
-  - '. |= map( if .port == 4369 and .proto == "tcp"  then .interface = "lo" else . end)'
+  - '. | map( if .port == 4369 and .proto == "tcp"  then .interface = "lo" else . end)'
 # rabbit (doesn't seem to referenced in any config file)
-  - '. |= map( if .port == 25672 and .proto == "tcp"  then .interface = "lo" else . end)'
+  - '. | map( if .port == 25672 and .proto == "tcp"  then .interface = "lo" else . end)'
 # bifrost mysql
-  - '. |= map( if .port == 3306 and .proto == "tcp"  then .interface = "lo" else . end)'
+  - '. | map( if .port == 3306 and .proto == "tcp"  then .interface = "lo" else . end)'
 # bifrost rabbitmq
-  - '. |= map( if .port == 5672 and .proto == "tcp"  then .interface = "lo" else . end)'
+  - '. | map( if .port == 5672 and .proto == "tcp"  then .interface = "lo" else . end)'
 # DNS ?
-  - '. |= map( if .port == 53 then .interface = "lo" else . end)'
+  - '. | map( if .port == 53 then .interface = "lo" else . end)'
 # docker-proxy for docker regsitry
   - >-
-    . |= map( if .port == 4000 and .proto == "tcp" then
+    . | map( if .port == 4000 and .proto == "tcp" then
             .interface = "{{ firewallgen_interface_tmpl % 'provision_oc_net_name' }}" else . end)
 
-firewallgen_ipv4_input_allow_custom_rules_extra:
+firewallgen_ipv4_input_allow_custom_rules_seed:
  - interface: "{{ firewallgen_interface_tmpl % 'ilab_net_name' }}"
    port: 22
    proto: tcp

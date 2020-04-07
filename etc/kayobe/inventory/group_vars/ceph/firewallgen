@@ -3,7 +3,7 @@
 firewallgen_ceph_range_start: 6800 
 firewallgen_ceph_range_end: 7300
 
-firewallgen_ipv4_input_allow_rewrite_rules_extra:
+firewallgen_ipv4_input_allow_rewrite_rules_ceph:
   # systemd socket activation for portmapper service
   - '. | map(select(.port != 111))'
   # ceph port range is added explictly (see below)
@@ -11,11 +11,11 @@ firewallgen_ipv4_input_allow_rewrite_rules_extra:
     . | map(select(.port < {{ firewallgen_ceph_range_start }}  or
                    .port > {{ firewallgen_ceph_range_end }} ))
   - >-
-    . |= map(if .processes[].name == "ceph-mgr" then
+    . | map(if .processes[].name == "ceph-mgr" then
         .interface = "{{ firewallgen_interface_tmpl % 'storage_mgmt_net_name' }}"
       else . end)
 
-firewallgen_ipv4_input_allow_custom_rules_extra:
+firewallgen_ipv4_input_allow_custom_rules_ceph:
   # Ceph ports, based on: "When a daemon fails and restarts without letting
   # go of the port, the restarted daemon will bind to a new port. You should
   # open the entire 6800-7300 port range to handle this possibility."

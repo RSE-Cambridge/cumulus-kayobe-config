@@ -26,6 +26,11 @@ external_net_interface: "{{ br_net_interface }}.{{ external_net_vlan }}"
 tunnel_net_interface: "{{ br_net_interface }}.{{ tunnel_net_vlan }}"
 storage_net_interface: "{{ br_net_interface }}.{{ storage_net_vlan }}"
 
+# Ceph storage network IP information.
+# ceph_storage_net_interface:
+# ceph_storage_net_bridge_ports:
+# ceph_storage_net_bond_slaves:
+
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes

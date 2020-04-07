@@ -23,3 +23,7 @@ oob_oc_net_interface: "{{ seed_1gbe_physical_interface }}.{{ oob_oc_net_vlan }}"
 # Internal network IP information.
 # NOTE: only used for admin access to internal_net
 internal_net_interface: "{{ seed_1gbe_physical_interface }}.{{ internal_net_vlan }}"
+
+###############################################################################
+# Dummy variable to allow Ansible to accept this file.
+workaround_ansible_issue_8743: yes

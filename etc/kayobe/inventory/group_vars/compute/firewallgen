@@ -16,11 +16,7 @@ firewallgen_ipv4_input_allow_rewrite_rules_compute:
     . | map(select(.port < {{ firewallgen_libvirt_serial_console_range_start }}  or
                    .port > {{ firewallgen_libvirt_serial_console_range_end }} ))
 
-firewallgen_ipv4_input_allow_rewrite_rules: >
-  {{ firewallgen_ipv4_input_allow_rewrite_rules_compute +
-  firewallgen_ipv4_input_allow_rewrite_rules_all }}
-
-firewallgen_ipv4_input_allow_custom_rules_extra:
+firewallgen_ipv4_input_allow_custom_rules_compute:
   # Libvirt serial consoles, based on:
   # https://blog.scottlowe.org/2013/09/10/adjusting-vnc-console-access-via-libvirt-xml/
   # https://libvirt.org/git/?p=libvirt.git;a=blob;f=src/qemu/qemu.conf#l387

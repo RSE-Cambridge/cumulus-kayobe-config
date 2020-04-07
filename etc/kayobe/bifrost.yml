@@ -7,7 +7,8 @@
 # URL of Bifrost source code repository.
 #kolla_bifrost_source_url:
 
-# Version (branch, tag, etc.) of Bifrost source code repository.
+# Version (branch, tag, etc.) of Bifrost source code repository. Default is
+# {{ openstack_branch }}.
 #kolla_bifrost_source_version:
 
 ###############################################################################
@@ -44,14 +45,14 @@ kolla_bifrost_dib_env_vars:
 ###############################################################################
 # Ironic configuration.
 
-# Whether to enable ipmitool-based drivers.
-#kolla_bifrost_enable_ipmitool_drivers:
+# List of hardware types to enable for Bifrost's Ironic.
+#kolla_bifrost_enabled_hardware_types:
 
 ###############################################################################
 # Ironic Inspector configuration.
 
 # List of of inspector processing plugins.
-#kolla_bifrost_inspector_processing_hooks:
+kolla_bifrost_inspector_processing_hooks: "{{ inspector_processing_hooks_default }}"
 
 # Which MAC addresses to add as ports during introspection. One of 'all',
 # 'active' or 'pxe'.
