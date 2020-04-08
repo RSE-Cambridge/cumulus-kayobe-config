@@ -20,19 +20,31 @@ glance
 nova
 
 [nova-conductor:children]
+{% if 'cell-control' in kolla_overcloud_inventory_top_level_group_map %}
+cell-control
+{% else %}
 nova
+{% endif %}
 
-[nova-consoleauth:children]
+[nova-super-conductor:children]
 nova
 
 [nova-novncproxy:children]
+{% if 'cell-control' in kolla_overcloud_inventory_top_level_group_map %}
+cell-control
+{% else %}
 nova
+{% endif %}
 
 [nova-scheduler:children]
 nova
 
 [nova-spicehtml5proxy:children]
+{% if 'cell-control' in kolla_overcloud_inventory_top_level_group_map %}
+cell-control
+{% else %}
 nova
+{% endif %}
 
 # NOTE: HA for nova-compute services with ironic is still an experimental
 # feature. Provide the option to use a single compute host, even when multiple
@@ -46,7 +58,11 @@ nova
 {% endif %}
 
 [nova-serialproxy:children]
+{% if 'cell-control' in kolla_overcloud_inventory_top_level_group_map %}
+cell-control
+{% else %}
 nova
+{% endif %}
 
 # Neutron
 [neutron-server:children]
@@ -56,9 +72,6 @@ control
 neutron
 
 [neutron-l3-agent:children]
-neutron
-
-[neutron-lbaas-agent:children]
 neutron
 
 [neutron-metadata-agent:children]
@@ -276,6 +289,13 @@ magnum
 
 [magnum-conductor:children]
 magnum
+
+# Qinling
+[qinling-api:children]
+qinling
+
+[qinling-engine:children]
+qinling
 
 # Sahara
 [sahara-api:children]
@@ -531,6 +551,18 @@ monitoring
 
 [prometheus-elasticsearch-exporter:children]
 elasticsearch
+
+[prometheus-blackbox-exporter:children]
+monitoring
+
+[masakari-api:children]
+control
+
+[masakari-engine:children]
+control
+
+[masakari-monitors:children]
+compute
 
 ########### CUSTOM FORK ONLY ###########
 [prometheus-libvirt-exporter:children]

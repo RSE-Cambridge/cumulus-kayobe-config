@@ -32,7 +32,6 @@ monitoring
 
 [etcd:children]
 control
-compute
 
 ###### CUSTOMISED #######
 [influxdb]
@@ -175,6 +174,9 @@ control
 storage
 
 [magnum:children]
+control
+
+[qinling:children]
 control
 
 [sahara:children]
