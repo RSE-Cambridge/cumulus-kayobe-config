@@ -52,11 +52,18 @@ cpu-e-1084 ipmi_address=10.202.0.37 bmc_type=idrac
 cpu-e-1044 ipmi_address=10.202.0.33 bmc_type=idrac
 #FAULT cpu-e-1081 ipmi_address=10.202.0.34 bmc_type=idrac
 
+[compute-jun20]
+cpu-e-1045 ipmi_address=10.202.0.38 bmc_type=idrac
+cpu-e-1046 ipmi_address=10.202.0.39 bmc_type=idrac
+cpu-e-1047 ipmi_address=10.202.0.40 bmc_type=idrac
+cpu-e-1048 ipmi_address=10.202.0.41 bmc_type=idrac
+
 [compute:children]
 compute-apr19
 compute-jun19
 compute-aug19
 compute-mar20
+compute-jun20
 
 # only put monitoring on ceph nodes
 # as we use ceph-ansible
