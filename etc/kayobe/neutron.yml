@@ -6,9 +6,9 @@
 # defaults will be used.
 kolla_neutron_ml2_mechanism_drivers:
   - openvswitch
+  - ansible
   - genericswitch
   - l2population
-  - ansible
 
 # List of Neutron ML2 type drivers to use.
 kolla_neutron_ml2_type_drivers:
