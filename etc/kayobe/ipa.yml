@@ -40,7 +40,7 @@ ipa_build_dib_env_extra:
   DIB_DEV_USER_USERNAME: "dev"
   DIB_DEV_USER_PASSWORD: "{{ secrets_ipa_dev_user_password }}"
   DIB_DEV_USER_PWDLESS_SUDO: 1
-  DIB_DHCP_TIMEOUT: 60
+  DIB_DHCP_TIMEOUT: 120
   DIB_QL41K_REPO: "https://cumulus-repo.vss.cloud.cam.ac.uk/ql41k"
   DIB_QL41K_VERSION: "8.37.30.0-1.rhel7u6.x86_64"
 
