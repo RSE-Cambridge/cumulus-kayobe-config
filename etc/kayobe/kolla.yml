@@ -256,6 +256,7 @@ kolla_enable_horizon: True
 #kolla_enable_influxdb:
 #kolla_enable_ironic: False
 kolla_enable_ironic_ipxe: True
+kolla_enable_ironic_neutron_agent: True
 #kolla_enable_ironic_pxe_uefi:
 #kolla_enable_iscsid:
 #kolla_enable_karbor:

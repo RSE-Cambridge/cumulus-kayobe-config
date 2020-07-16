@@ -51,7 +51,7 @@ inspector_processing_hooks_extra:
 
 # Which MAC addresses to add as ports during introspection. One of 'all',
 # 'active' or 'pxe'.
-inspector_add_ports: pxe
+inspector_add_ports: all
 
 # Which ports to keep after introspection. One of 'all', 'present', or 'added'.
 #inspector_keep_ports:
@@ -60,7 +60,7 @@ inspector_add_ports: pxe
 #inspector_enable_discovery:
 
 # The Ironic driver with which to register newly discovered nodes.
-#inspector_discovery_enroll_node_driver:
+inspector_discovery_enroll_node_driver: idrac
 
 ###############################################################################
 # Ironic inspector configuration.
@@ -115,6 +115,16 @@ inspector_lldp_switch_port_interface_default: p4p2
 
 # List of additional ironic inspector rules.
 #inspector_rules_extra:
+inspector_rules_extra:
+  - description: "Set the expected BIOS version for PowerEdge C6420."
+    conditions:
+    - field: "data://inventory.system_vendor.product_name"
+      op: "matches"
+      value: "^(PowerEdge C6420)$"
+    actions:
+    - action: "set-attribute"
+      path: "extra/system_vendor/bios_version"
+      value: "2.5.4"
 
 # List of all ironic inspector rules.
 #inspector_rules:
