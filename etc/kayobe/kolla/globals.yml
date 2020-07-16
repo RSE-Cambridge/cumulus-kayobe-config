@@ -103,4 +103,16 @@ es_heap_size: "24g"
 # Reduce the kolla-ansible token expiry default from one day to one hour
 fernet_token_expiry: 3600
 
-
+# NOTE: We are increasing the HAProxy timeouts to 5 minutes due to the neutron
+# generic switch driver, which synchronously applies switch configuration for
+# each ironic port during node provisioning and tear down. Due to the lack of
+# batching of configuration sets, and the long time required for configuration
+# to be applied to the Dell switches (~20 seconds), concurrent deployment of
+# multiple nodes can cause configuration transactions to back up.  The specific
+# API calls that require this long timeout are:
+# - Creation and deletion of VLAN networks.
+# - Creation or update of ports, adding binding information.
+# - Update of ports, removing binding information.
+# - Deletion of ports.
+haproxy_client_timeout: 5m30
+haproxy_server_timeout: 5m30
