@@ -3,72 +3,97 @@
 # Ironic configuration.
 
 # Specify the list of hardware types to load during service initialization.
-#kolla_ironic_enabled_hardware_types:
+kolla_ironic_enabled_hardware_types:
+  - ipmi
+  - idrac
 
 # Specify the list of boot interfaces to load during service initialization.
-#kolla_ironic_enabled_boot_interfaces:
+kolla_ironic_enabled_boot_interfaces:
+  - ipxe
+  - pxe
 
 # Default boot interface to be used for nodes that do not have boot_interface
 # field set.
-#kolla_ironic_default_boot_interface:
+kolla_ironic_default_boot_interface: ipxe
 
 # Specify the list of console interfaces to load during service initialization.
 kolla_ironic_enabled_console_interfaces:
   - ipmitool-socat
+  - no-console
 
 # Default console interface to be used for nodes that do not have
 # console_interface field set.
-#kolla_ironic_default_console_interface:
+kolla_ironic_default_console_interface: no-console
 
 # Specify the list of deploy interfaces to load during service initialization.
-#kolla_ironic_enabled_deploy_interfaces:
+kolla_ironic_enabled_deploy_interfaces:
+  - direct
+  - iscsi
 
 # Default deploy interface to be used for nodes that do not have
 # deploy_interface field set.
-#kolla_ironic_default_deploy_interface:
+kolla_ironic_default_deploy_interface: iscsi
 
 # Specify the list of inspect interfaces to load during service initialization.
-#kolla_ironic_enabled_inspect_interfaces:
+kolla_ironic_enabled_inspect_interfaces:
+  - inspector
+  - no-inspect
+  - idrac-wsman
+  - idrac-redfish
 
 # Default inspect interface to be used for nodes that do not have
 # inspect_interface field set.
-#kolla_ironic_default_inspect_interface:
+kolla_ironic_default_inspect_interface: inspector
 
 # Specify the list of management interfaces to load during service
 # initialization.
-#kolla_ironic_enabled_management_interfaces:
+kolla_ironic_enabled_management_interfaces:
+  - ipmitool
+  - idrac-wsman
+  - idrac-redfish
 
 # Default management interface to be used for nodes that do not have
 # management_interface field set.
-#kolla_ironic_default_management_interface:
+kolla_ironic_default_management_interface:
 
 # Specify the list of network interfaces to load during service initialization.
-#kolla_ironic_enabled_network_interfaces:
+kolla_ironic_enabled_network_interfaces:
+  - noop
+  - flat
+  - neutron
 
 # Default network interface to be used for nodes that do not have
 # network_interface field set.
-#kolla_ironic_default_network_interface:
+kolla_ironic_default_network_interface: neutron
 
 # Specify the list of power interfaces to load during service initialization.
-#kolla_ironic_enabled_power_interfaces:
+kolla_ironic_enabled_power_interfaces:
+  - idrac-wsman
+  - idrac-redfish
+  - ipmitool
 
 # Default power interface to be used for nodes that do not have power_interface
 # field set.
-#kolla_ironic_default_power_interface:
+kolla_ironic_default_power_interface:
 
 # Specify the list of raid interfaces to load during service initialization.
-#kolla_ironic_enabled_raid_interfaces:
+kolla_ironic_enabled_raid_interfaces:
+  - agent
+  - no-raid
+  - idrac-wsman
 
 # Default raid interface to be used for nodes that do not have
 # raid_interface field set.
-#kolla_ironic_default_raid_interface:
+kolla_ironic_default_raid_interface: no-raid
 
 # Specify the list of rescue interfaces to load during service initialization.
-#kolla_ironic_enabled_rescue_interfaces:
+kolla_ironic_enabled_rescue_interfaces:
+  - agent
+  - no-rescue
 
 # Default rescue interface to be used for nodes that do not have
 # rescue_interface field set.
-#kolla_ironic_default_rescue_interface:
+kolla_ironic_default_rescue_interface: no-rescue
 
 # Specify the list of storage interfaces to load during
 # service initialization.
@@ -79,15 +104,17 @@ kolla_ironic_enabled_console_interfaces:
 #kolla_ironic_default_storage_interface:
 
 # Specify the list of vendor interfaces to load during service initialization.
-#kolla_ironic_enabled_vendor_interfaces:
+kolla_ironic_enabled_vendor_interfaces:
+  - no-vendor
+  - idrac-wsman
 
 # Default vendor interface to be used for nodes that do not have
 # vendor_interface field set.
-#kolla_ironic_default_vendor_interface:
+kolla_ironic_default_vendor_interface: no-vendor
 
 # Default boot option to use when no boot option is requested in node's
 # driver_info.
-#kolla_ironic_default_boot_option:
+kolla_ironic_default_boot_option: local
 
 # Name of the Neutron network to use for cleaning.
 #kolla_ironic_cleaning_network:
