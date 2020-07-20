@@ -84,7 +84,7 @@ kolla_docker_namespace: rse-cambridge
 
 # Kolla OpenStack release version. This should be a Docker image tag.
 # Default is {{ openstack_release }}.
-kolla_openstack_release: 9.0.2.0
+kolla_openstack_release: 9.0.3.0
 
 # Dict mapping names of sources to their definitions for
 # kolla_install_type=source. See kolla.common.config for details.
@@ -103,7 +103,7 @@ kolla_openstack_release: 9.0.2.0
 #kolla_build_blocks:
 kolla_build_blocks:
   neutron_server_footer: |
-    RUN pip install git+https://github.com/stackhpc/networking-generic-switch@stackhpc/2.1.0.1 -c https://releases.openstack.org/constraints/upper/train
+    RUN pip install git+https://github.com/stackhpc/networking-generic-switch@add-cumulus -c https://releases.openstack.org/constraints/upper/train
     RUN pip install networking-ansible==3.0.0 -c https://releases.openstack.org/constraints/upper/train
     RUN pip install "ansible<2.10" -c https://releases.openstack.org/constraints/upper/train
   prometheus_server_repository_version: |
