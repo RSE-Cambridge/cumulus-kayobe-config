@@ -245,7 +245,7 @@ kolla_enable_cinder: False
 #kolla_enable_cloudkitty:
 #kolla_enable_congress:
 kolla_enable_designate: True
-#kolla_enable_etcd:
+kolla_enable_etcd: True
 #kolla_enable_fluentd:
 #kolla_enable_freezer:
 #kolla_enable_gnocchi:
