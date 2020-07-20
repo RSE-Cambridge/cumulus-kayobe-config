@@ -294,7 +294,7 @@ kolla_enable_prometheus: True
 #kolla_enable_sahara:
 #kolla_enable_searchlight:
 #kolla_enable_senlin:
-kolla_enable_skydive: True
+kolla_enable_skydive: False
 #kolla_enable_solum:
 #kolla_enable_storm:
 #kolla_enable_swift:
