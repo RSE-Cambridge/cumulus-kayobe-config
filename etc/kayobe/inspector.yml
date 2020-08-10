@@ -112,6 +112,19 @@ inspector_lldp_switch_port_interface_default: p4p2
 
 # List of default ironic inspector rules.
 #inspector_rules_default:
+inspector_rules_default:
+  - "{{ inspector_rule_ipmi_credentials }}"
+  - "{{ inspector_rule_deploy_kernel }}"
+  - "{{ inspector_rule_deploy_ramdisk }}"
+  - "{{ inspector_rule_local_boot }}"
+  - "{{ inspector_rule_root_hint_init }}"
+  - "{{ inspector_rule_root_hint_serial }}"
+  - "{{ inspector_rule_set_pxe_interface_mac }}"
+  #- "{{ inspector_rule_lldp_switch_port_desc_to_name }}"
+  - "{{ inspector_rule_save_system_vendor_init }}"
+  - "{{ inspector_rule_save_system_vendor_manufacturer }}"
+  - "{{ inspector_rule_save_system_vendor_serial_number }}"
+  - "{{ inspector_rule_save_system_vendor_product_name }}"
 
 # List of additional ironic inspector rules.
 #inspector_rules_extra:
