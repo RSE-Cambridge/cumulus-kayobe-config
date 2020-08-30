@@ -260,7 +260,7 @@ kolla_enable_manila: True
 #kolla_enable_manila_backend_hnas:
 kolla_enable_manila_backend_cephfs_native: True
 kolla_enable_manila_backend_cephfs_nfs: True
-#kolla_enable_mariabackup:
+kolla_enable_mariabackup: True
 #kolla_enable_mistral:
 kolla_enable_monasca: False
 #kolla_enable_mongodb:
