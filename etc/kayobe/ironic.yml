@@ -5,12 +5,10 @@
 # Specify the list of hardware types to load during service initialization.
 kolla_ironic_enabled_hardware_types:
   - ipmi
-#  - idrac
 
 # Specify the list of boot interfaces to load during service initialization.
 kolla_ironic_enabled_boot_interfaces:
   - ipxe
-  - pxe
 
 # Default boot interface to be used for nodes that do not have boot_interface
 # field set.
@@ -28,18 +26,15 @@ kolla_ironic_default_console_interface: no-console
 # Specify the list of deploy interfaces to load during service initialization.
 kolla_ironic_enabled_deploy_interfaces:
   - direct
-  - iscsi
 
 # Default deploy interface to be used for nodes that do not have
 # deploy_interface field set.
-kolla_ironic_default_deploy_interface: iscsi
+kolla_ironic_default_deploy_interface: direct
 
 # Specify the list of inspect interfaces to load during service initialization.
 kolla_ironic_enabled_inspect_interfaces:
   - inspector
   - no-inspect
-#  - idrac-wsman
-#  - idrac-redfish
 
 # Default inspect interface to be used for nodes that do not have
 # inspect_interface field set.
@@ -49,12 +44,10 @@ kolla_ironic_default_inspect_interface: inspector
 # initialization.
 kolla_ironic_enabled_management_interfaces:
   - ipmitool
-#  - idrac-wsman
-#  - idrac-redfish
 
 # Default management interface to be used for nodes that do not have
 # management_interface field set.
-kolla_ironic_default_management_interface:
+kolla_ironic_default_management_interface: ipmitool
 
 # Specify the list of network interfaces to load during service initialization.
 kolla_ironic_enabled_network_interfaces:
@@ -68,19 +61,16 @@ kolla_ironic_default_network_interface: neutron
 
 # Specify the list of power interfaces to load during service initialization.
 kolla_ironic_enabled_power_interfaces:
-  - idrac-wsman
-  - idrac-redfish
   - ipmitool
 
 # Default power interface to be used for nodes that do not have power_interface
 # field set.
-kolla_ironic_default_power_interface:
+kolla_ironic_default_power_interface: ipmitool
 
 # Specify the list of raid interfaces to load during service initialization.
 kolla_ironic_enabled_raid_interfaces:
   - agent
   - no-raid
-#  - idrac-wsman
 
 # Default raid interface to be used for nodes that do not have
 # raid_interface field set.
@@ -106,7 +96,6 @@ kolla_ironic_default_rescue_interface: no-rescue
 # Specify the list of vendor interfaces to load during service initialization.
 kolla_ironic_enabled_vendor_interfaces:
   - no-vendor
-#  - idrac-wsman
 
 # Default vendor interface to be used for nodes that do not have
 # vendor_interface field set.
