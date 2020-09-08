@@ -116,3 +116,8 @@ fernet_token_expiry: 3600
 # - Deletion of ports.
 haproxy_client_timeout: 5m30
 haproxy_server_timeout: 5m30
+
+# Increase from 10 seconds due to issues
+# with eventlet taking a while to complete a request
+# Note: mariadb connect timeout is set to 30 seconds
+haproxy_connect_timeout: 30s
