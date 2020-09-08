@@ -96,6 +96,8 @@ rabbitmq_tag: 9.0.1.1
 skydive_tag: 9.0.1.1
 storm_tag: 9.0.1.1
 zookeeper_tag: 9.0.1.1
+etcd_tag: 9.0.3.0
+placement_tag: 9.0.1.1
 
 # Default size causes ES to fall over very easily
 es_heap_size: "24g"
