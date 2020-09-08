@@ -1,0 +1,4 @@
+[mysqld]
+# wait 30 seconds for threads to connect
+# due to eventlet crazyness
+connect_timeout = 30
