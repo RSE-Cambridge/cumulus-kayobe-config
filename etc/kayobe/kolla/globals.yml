@@ -84,7 +84,7 @@ monasca_tag: 9.0.1.1
 monasca_notification_tag: 9.0.1.1
 monasca_persister_tag: 9.0.1.1
 neutron_tag: 9.0.3.1
-nova_tag: 9.0.1.1
+nova_tag: 9.0.3.1
 openvswitch_tag: 9.0.1.1
 prometheus_tag: 9.0.1.1
 prometheus_server_tag: 9.0.1.1
