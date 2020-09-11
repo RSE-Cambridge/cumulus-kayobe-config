@@ -154,6 +154,9 @@ kolla_build_customizations:
     - 'python2-network-runner.noarch'
     - 'python2-networking-ansible'
     - 'sshpass'
+  nova_base_packages_append:
+    # Allow custom packages to be installed via pip.
+    - 'python-pip'
 
 ###############################################################################
 # Kolla-ansible inventory configuration.
