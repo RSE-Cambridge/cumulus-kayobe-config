@@ -1,0 +1,15 @@
+---
+nova_instance_datadir_volume: /var/lib/nova
+
+compute_lvm_groups:
+  - vgname: instances-disk
+    disks:
+      - /dev/sdb
+    create: true
+    lvnames:
+      - lvname: instances-disk-0
+        size: "100%FREE"
+        create: true
+        mount: true
+        filesystem: ext4
+        mntp: "{{ nova_instance_datadir_volume }}"

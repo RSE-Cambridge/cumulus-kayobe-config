@@ -1,0 +1,104 @@
+---
+
+firewallgen_enable_firewall: True
+
+firewallgen_ipv4_input_allow_rules:
+  - interface: "lo"
+    port: 25
+    proto: tcp
+    destination: "127.0.0.1"
+    comment: "hint: used by 'master'"
+  - interface: "lo"
+    port: 6633
+    proto: tcp
+    destination: "127.0.0.1"
+    comment: "hint: used by 'neutron-openvsw' in docker container 'neutron_openvswitch_agent'"
+  - interface: "lo"
+    port: 6640
+    proto: tcp
+    destination: "127.0.0.1"
+    comment: "hint: used by 'ovsdb-server' in docker container 'openvswitch_db'"
+  - interface: "{{ admin_oc_net_interface }}"
+    port: 22
+    proto: tcp
+    comment: "hint: used by 'sshd'"
+  - interface: "{{ internal_net_interface }}"
+    port: 8022
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'sshd' in docker container 'nova_ssh'"
+  - interface: "{{ internal_net_interface }}"
+    port: 9100
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'node_exporter' in docker container 'prometheus_node_exporter'"
+  - interface: "{{ internal_net_interface }}"
+    port: 9177
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'libvirt_exporte' in docker container 'prometheus_libvirt_exporter'"
+  - interface: "{{ internal_net_interface }}"
+    port: 16509
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'libvirtd' in docker container 'nova_libvirt'"
+  - interface: "{{ internal_net_name | net_interface }}"
+    port: 9197
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'mtail' in docker container 'prometheus_mtail'"
+  - interface: "{{ internal_net_name | net_interface }}"
+    port: 10000:20000
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "Nova serial console proxy"
+  - interface: "{{ internal_net_name | net_interface }}"
+    port: 18080
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'cadvisor' in docker container 'prometheus_cadvisor'"
+  - interface: "{{ internal_net_name | net_interface }}"
+    port: 49152:49215
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "Nova live migration"
+  - interface: "{{ internal_net_name | net_interface }}"
+    port: 5900:6000
+    proto: tcp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "libvirt serial consoles"
+  - interface: "docker0"
+    port: 123
+    proto: udp
+    destination: "172.17.0.1"
+    comment: "hint: used by 'ntpd'"
+  - interface: "lo"
+    port: 123
+    proto: udp
+    destination: "127.0.0.1"
+    comment: "hint: used by 'ntpd'"
+  - interface: "lo"
+    port: 323
+    proto: udp
+    destination: "127.0.0.1"
+    comment: "hint: used by 'chronyd' in docker container 'chrony'"
+  - interface: "lo"
+    port: 5140
+    proto: udp
+    destination: "127.0.0.1"
+    comment: "hint: used by 'fluentd' in docker container 'fluentd'"
+  - interface: "{{ internal_net_interface }}"
+    port: 123
+    proto: udp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'ntpd'"
+  - interface: "{{ internal_net_interface }}"
+    port: 5140
+    proto: udp
+    destination: "{{ internal_net_name | net_ip }}"
+    comment: "hint: used by 'fluentd' in docker container 'fluentd'"
+  - interface: "{{ tunnel_net_name | net_interface }}"
+    port: 4789
+    proto: udp
+    destination: "{{ tunnel_net_name | net_ip }}"
+    comment: "required for VXLANs to work"

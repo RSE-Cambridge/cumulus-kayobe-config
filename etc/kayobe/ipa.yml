@@ -43,6 +43,8 @@ ipa_build_dib_env_extra:
   DIB_DHCP_TIMEOUT: 60
   DIB_QL41K_REPO: "https://cumulus-repo.vss.cloud.cam.ac.uk/ql41k"
   DIB_QL41K_VERSION: "8.37.30.0-1.rhel7u6.x86_64"
+  DIB_INSTALL_TYPE_pip_and_virtualenv: package
+  DIB_IPA_HARDWARE_VERSION: "0.23.0"
 
 # Dictionary of environment variables to provide to Diskimage Builder (DIB)
 # during IPA image build.

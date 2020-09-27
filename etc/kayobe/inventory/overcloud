@@ -58,12 +58,21 @@ cpu-e-1046 ipmi_address=10.202.0.39 bmc_type=idrac
 cpu-e-1047 ipmi_address=10.202.0.40 bmc_type=idrac
 cpu-e-1048 ipmi_address=10.202.0.41 bmc_type=idrac
 
+[compute-sep20]
+
 [compute:children]
+compute-csd3-skylake
+compute-csd3-cclake
+
+[compute-csd3-skylake:children]
 compute-apr19
 compute-jun19
 compute-aug19
 compute-mar20
 compute-jun20
+
+[compute-csd3-cclake:children]
+compute-sep20
 
 # only put monitoring on ceph nodes
 # as we use ceph-ansible
