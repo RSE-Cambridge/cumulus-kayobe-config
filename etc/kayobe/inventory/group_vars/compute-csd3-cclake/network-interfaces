@@ -3,17 +3,11 @@
 # Network interface definitions for the compute group.
 
 # Overcloud provisioning network IP information.
-# On 1Gb nic for now
-br_net_interface: brbond0
+br_net_interface: br0
 br_net_bridge_ports:
-  - bond0
+  - enp94s0f1
 
 compute_1gbe_interface: eno16
-
-bond0_net_interface: bond0
-bond0_net_bond_slaves:
-  - enp94s0f0
-  - enp94s0f1
 
 # Admin network IP information.
 # still on 1G network
