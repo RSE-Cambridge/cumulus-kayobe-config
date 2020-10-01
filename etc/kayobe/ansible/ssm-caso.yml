@@ -9,7 +9,7 @@
     ssm_outgoing_volume: caso_ssm_outgoing
     ssm_protocol: "AMS"
     ssm_auto_broker: false
-    ams_host: msg-devel.argo.grnet.gr
+    ams_host: msg.argo.grnet.gr
     ams_destination: "IRIS-cloud"
     ams_project: "accounting"
     ams_token: "{{ secrets_apel_ams_token }}"
