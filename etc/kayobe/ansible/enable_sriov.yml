@@ -1,0 +1,13 @@
+---
+- name: configure sr-iov
+  hosts: compute-sep20
+  vars:
+    sriov_devices:
+      - name: enp94s0f1
+        numvfs: 2
+  tasks:
+    - include_role:
+        name: stackhpc.sriov
+  handlers:
+    - name: reboot
+      include_tasks: tasks/reboot.yml

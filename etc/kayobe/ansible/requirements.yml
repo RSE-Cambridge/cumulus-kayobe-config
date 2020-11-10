@@ -5,3 +5,15 @@
 - src: https://github.com/paulbrowne/stackhpc.ssm
   version: auth_token 
   name: stackhpc.ssm
+
+- src: https://github.com/stackhpc/ansible-role-sriov
+  version: master
+  name: stackhpc.sriov
+
+- src: https://github.com/stackhpc/ansible-role-grubcmdline
+  version: master
+  name: stackhpc.grubcmdline
+
+- src: https://github.com/stackhpc/ansible-role-ofed
+  version: master
+  name: stackhpc.ofed

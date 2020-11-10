@@ -36,6 +36,9 @@ ansible/*.retry
 .DS_Store
 .vimrc
 
+# Ignore downloaded Ansible roles
+etc/kayobe/ansible/roles
+
 # Ignore auto-generated group variables file.
 etc/kayobe/inventory/group_vars/seed/ansible-host
 
