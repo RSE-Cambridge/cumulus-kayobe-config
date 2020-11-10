@@ -19,6 +19,22 @@ controllers
 [monitoring]
 mon1 ipmi_address=10.202.0.2 bmc_type=idrac
 
+# KVM compute parent groups
+[compute:children]
+compute-csd3-skylake
+compute-csd3-cclake
+
+[compute-csd3-skylake:children]
+compute-apr19
+compute-jun19
+compute-aug19
+compute-mar20
+compute-jun20
+
+[compute-csd3-cclake:children]
+compute-sep20
+
+# Skylake KVM compute
 [compute-apr19]
 cpu-e-1085 ipmi_address=10.202.0.10 bmc_type=idrac
 cpu-e-1086 ipmi_address=10.202.0.11 bmc_type=idrac
@@ -58,12 +74,48 @@ cpu-e-1046 ipmi_address=10.202.0.39 bmc_type=idrac
 cpu-e-1047 ipmi_address=10.202.0.40 bmc_type=idrac
 cpu-e-1048 ipmi_address=10.202.0.41 bmc_type=idrac
 
-[compute:children]
-compute-apr19
-compute-jun19
-compute-aug19
-compute-mar20
-compute-jun20
+# Cascade Lake KVM compute
+[compute-sep20]
+cpu-p-672 ipmi_address=10.202.163.248 bmc_type=idrac
+cpu-p-671 ipmi_address=10.202.163.247 bmc_type=idrac
+cpu-p-670 ipmi_address=10.202.163.246 bmc_type=idrac
+cpu-p-669 ipmi_address=10.202.163.245 bmc_type=idrac
+cpu-p-668 ipmi_address=10.202.163.244 bmc_type=idrac
+cpu-p-667 ipmi_address=10.202.163.243 bmc_type=idrac
+cpu-p-666 ipmi_address=10.202.163.242 bmc_type=idrac
+cpu-p-665 ipmi_address=10.202.163.241 bmc_type=idrac
+cpu-p-664 ipmi_address=10.202.163.240 bmc_type=idrac
+cpu-p-663 ipmi_address=10.202.163.239 bmc_type=idrac
+cpu-p-662 ipmi_address=10.202.163.238 bmc_type=idrac
+cpu-p-661 ipmi_address=10.202.163.237 bmc_type=idrac
+cpu-p-660 ipmi_address=10.202.163.236 bmc_type=idrac
+cpu-p-659 ipmi_address=10.202.163.235 bmc_type=idrac
+cpu-p-658 ipmi_address=10.202.163.234 bmc_type=idrac
+cpu-p-657 ipmi_address=10.202.163.233 bmc_type=idrac
+cpu-p-656 ipmi_address=10.202.163.232 bmc_type=idrac
+#cpu-p-655 ipmi_address=10.202.163.231 bmc_type=idrac
+#cpu-p-654 ipmi_address=10.202.163.230 bmc_type=idrac
+#cpu-p-653 ipmi_address=10.202.163.229 bmc_type=idrac
+#cpu-p-652 ipmi_address=10.202.163.228 bmc_type=idrac
+#cpu-p-651 ipmi_address=10.202.163.227 bmc_type=idrac
+#cpu-p-650 ipmi_address=10.202.163.226 bmc_type=idrac
+#cpu-p-649 ipmi_address=10.202.163.225 bmc_type=idrac
+#cpu-p-648 ipmi_address=10.202.163.224 bmc_type=idrac
+#cpu-p-647 ipmi_address=10.202.163.223 bmc_type=idrac
+#cpu-p-646 ipmi_address=10.202.163.222 bmc_type=idrac
+#cpu-p-645 ipmi_address=10.202.163.221 bmc_type=idrac
+#cpu-p-644 ipmi_address=10.202.163.220 bmc_type=idrac
+#cpu-p-643 ipmi_address=10.202.163.219 bmc_type=idrac
+#cpu-p-642 ipmi_address=10.202.163.218 bmc_type=idrac
+#cpu-p-641 ipmi_address=10.202.163.217 bmc_type=idrac
+#cpu-p-640 ipmi_address=10.202.163.216 bmc_type=idrac
+#cpu-p-639 ipmi_address=10.202.163.215 bmc_type=idrac
+#cpu-p-638 ipmi_address=10.202.163.214 bmc_type=idrac
+cpu-p-637 ipmi_address=10.202.163.213 bmc_type=idrac
+cpu-p-636 ipmi_address=10.202.163.212 bmc_type=idrac
+cpu-p-635 ipmi_address=10.202.163.211 bmc_type=idrac
+cpu-p-634 ipmi_address=10.202.163.210 bmc_type=idrac
+cpu-p-633 ipmi_address=10.202.163.209 bmc_type=idrac
 
 # only put monitoring on ceph nodes
 # as we use ceph-ansible

@@ -1,0 +1,30 @@
+---
+###############################################################################
+# Network interface definitions for the compute group.
+
+# Overcloud provisioning network IP information.
+br_net_interface: br0
+br_net_bridge_ports:
+  - enp94s0f1
+
+compute_1gbe_interface: eno16
+
+# Admin network IP information.
+# still on 1G network
+admin_oc_net_interface: "{{ compute_1gbe_interface }}.{{ admin_oc_net_vlan }}"
+# TODO hack to avoid this on the seed
+admin_oc_net_gateway: "10.{{ admin_oc_net_vlan }}.0.1"
+
+internal_net_interface: "{{ br_net_interface }}.{{ internal_net_vlan }}"
+external_net_interface: "{{ br_net_interface }}.{{ external_net_vlan }}"
+tunnel_net_interface: "{{ br_net_interface }}.{{ tunnel_net_vlan }}"
+storage_net_interface: "{{ br_net_interface }}.{{ storage_net_vlan }}"
+
+# Ceph storage network IP information.
+# ceph_storage_net_interface:
+# ceph_storage_net_bridge_ports:
+# ceph_storage_net_bond_slaves:
+
+###############################################################################
+# Dummy variable to allow Ansible to accept this file.
+workaround_ansible_issue_8743: yes

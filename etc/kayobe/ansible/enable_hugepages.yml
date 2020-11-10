@@ -1,0 +1,17 @@
+---
+- name: Enable huge pages
+  hosts: compute-sep20
+  vars:
+    kernel_cmdline:
+      - transparent_hugepage=never
+      - default_hugepagesz=1G
+      - hugepagesz=1G
+      - hugepages=172
+    kernel_cmdline_remove:
+      - hugepage
+  tasks:
+    - include_role:
+        name: stackhpc.grubcmdline
+  handlers:
+    - name: reboot
+      include_tasks: tasks/reboot.yml

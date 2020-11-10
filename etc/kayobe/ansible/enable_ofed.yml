@@ -1,0 +1,7 @@
+---
+- name: configure ofed
+  hosts: compute-sep20
+  become: yes
+  tasks:
+    - include_role:
+        name: stackhpc.ofed

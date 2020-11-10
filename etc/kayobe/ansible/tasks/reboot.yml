@@ -1,0 +1,22 @@
+---
+- name: reboot
+  command: /usr/bin/systemd-run --on-active=10 /usr/bin/systemctl reboot
+  async: 0
+  poll: 0
+  become: True
+
+- name: ensure the node goes down
+  local_action:
+    module: wait_for
+    host: "{{ ansible_host | default(inventory_hostname) }}"
+    port: 22
+    state: stopped
+    timeout: 60
+
+- name: wait for SSH access to return
+  local_action:
+    module: wait_for
+    host: "{{ ansible_host | default(inventory_hostname) }}"
+    port: 22
+    state: started
+    timeout: "{{ 60 * 10 }}"

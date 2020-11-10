@@ -50,6 +50,8 @@ kolla_bifrost_dib_env_vars:
   DIB_DEV_USER_PASSWORD: "{{ secrets_ipa_dev_user_password }}"
   DIB_DEV_USER_USERNAME: "dev"
   DIB_DHCP_TIMEOUT: 60
+  DIB_INSTALL_TYPE_pip_and_virtualenv: package
+  DIB_IPA_HARDWARE_VERSION: "0.23.0"
 
 # List of DIB packages to install.
 #kolla_bifrost_dib_packages:
